@@ -1,0 +1,5 @@
+(library
+ (name atomic)
+ (libraries dscheck)
+ (enabled_if
+  (>= %{ocaml_version} 5)))
