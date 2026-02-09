@@ -11,7 +11,7 @@
 
 (maintainers "Carine Morel <carine@tarides.com>")
 
-(license LICENSE)
+(license ISC)
 
 (documentation https://url/to/documentation)
 
@@ -19,8 +19,12 @@
  (name exercises)
  (synopsis "A short synopsis")
  (description "A longer description")
- (depends ocaml)
+ (depends
+  ocaml
+  (alcotest :with-test)
+  (dscheck :with-test)
+  (qcheck-core :with-test)
+  (qcheck-multicoretests-util :with-test)
+  (qcheck-stm :with-test))
  (tags
   ("add topics" "to describe" your project)))
-
-; See the complete stanza docs at https://dune.readthedocs.io/en/stable/reference/dune-project/index.html
