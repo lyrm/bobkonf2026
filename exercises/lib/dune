@@ -1,0 +1,4 @@
+(library
+ (package exercises)
+ (name spsc_queue)
+ (modules spsc_queue))

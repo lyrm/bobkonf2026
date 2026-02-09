@@ -1,0 +1,28 @@
+(lang dune 3.20)
+
+(name exercises)
+
+(generate_opam_files true)
+
+(source
+ (github lyrm/bobkonf2026))
+
+(authors "Carine Morel <carine@tarides.com>")
+
+(maintainers "Carine Morel <carine@tarides.com>")
+
+(license ISC)
+
+(package
+ (name exercises)
+ (synopsis "A short synopsis")
+ (description "A longer description")
+ (depends
+  (ocaml
+   (>= 5.2.0))
+  (alcotest :with-test)
+  (dscheck :with-test)
+  (qcheck-stm :with-test)
+  (qcheck-lin :with-test))
+ (tags
+  ("add topics" "to describe" your project)))
