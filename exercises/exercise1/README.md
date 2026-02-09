@@ -20,8 +20,8 @@ From `exercises/exercise1`, you can use the following commands:
 | Command                            | Description                                  |
 |------------------------------------|----------------------------------------------|
 | `dune build`                       | Compile the project and all the tests.       |
-| `dune exec ./path/to/test.exe`     | Run a specific test executable.              |
-| `dune runtest -f`                  | Run all the tests in the current directory.  |
+| `dune exec ./test/unit_tests.exe`     | Compile and run a specific test executable.              |
+| `dune runtest -f`                  | Compile and run all the tests in the current directory.  |
 
 > **💡 Note**: `dune runtest` is shorter, however, this runs all the executables labelled as tests in the current directory. This is convenient when checking nothing has been broken in the whole project, but it is not ideal in a debugging phase, like for this tutorial.
 
@@ -111,24 +111,32 @@ At this point, you should be able to see the test failing consistently, without 
 
 A nondeterministic bug in a concurrent program is often a sign of a race condition. There are two kinds of race conditions we are looking for today:
 - data races
-- race conditions between atomic operations (covered in exercises 2 and 3)
+- race conditions between atomic operations (covered in exercises 2)
 
 > **💡 Note**: If you have reached this point before my explanation about data races and race conditions, and you don't already know about them, no worries, you can still continue, all you really need to know is written below.
 
-We will start with data races. The second and third exercises will cover the second kind of race conditions.
 
-A *data race* is a particular race condition. The recipe for a data race is the following:
+### About data races in OCaml 5's memory model
+A *data race* occurs when:
 
-1. Several domains run in parallel
-2. At least two domains access the same mutable value simultaneously
-3. At least one of the accesses is a write
-4. The value is not atomic
+1. Two or more domains run in parallel,
+2. at least two access the same non-atomic mutable value,
+3. and at least one of them writes to it.
 
-> **💡 Note**: Non-atomic mutable values in OCaml are:
+> **💡 Note**: Non-atomic mutable values in OCaml include:
 > - reference cells (`ref`),
-> - mutable fields in records (`{...; mutable field:...}`),
-> - mutable arrays (`Array` and `Bigarray`).
+> - mutable record fields (`{...; mutable field : ...}`),
+> - arrays (`Array` and `Bigarray`).
 
+**What happens when there is a data race?** Unlike C/C++ where data races are undefined behavior, OCaml's memory model guarantees that your program won't crash or corrupt memory. However, you may observe *non-sequentially-consistent* results: the outcome may not correspond to any interleaving of the operations from each domain.
+
+In a data-race-free program, OCaml guarantees *sequential consistency*: every execution behaves as if the operations of all domains were interleaved in some order. This is known as the **DRF-SC** property (Data-Race-Free implies Sequential Consistency).
+
+For more on OCaml's memory model:
+- https://ocaml.org/manual/5.4/parallelism.html
+- https://ocaml.org/manual/5.4/memorymodel.html
+
+### Exercise: Catching the data races
 To catch a data race, we use the same tool that other languages use: ThreadSanitizer (TSan). TSan instruments the compiler to detect data races during execution.
 
 To run the test with TSan, you need to use the second switch where TSan is enabled. You can switch to it with the following command:
