@@ -59,12 +59,12 @@ let try_push t element =
     head == head_cache
   then false
   else begin
-    Array.set t.array (tail land (size - 1)) (Some element);
+    (* First possible race conditions: exchange incr and set (it should be first set than incr) *)
     Atomic.incr t.tail;
+    Array.set t.array (tail land (size - 1)) (Some element);
     true
   end
 
-(* *)
 let pop_opt t =
   let head = Atomic.get t.head in
   let tail_cache = t.tail_cache in
@@ -97,9 +97,10 @@ let peek_opt t =
     let v = Array.get t.array index in
     v
 
-(* *)
-
 let length t =
   let tail = Atomic.get t.tail in
   let head = Atomic.get t.head in
+  (* data races *)
+  t.head_cache <- head;
+  t.tail_cache <- tail;
   tail - head

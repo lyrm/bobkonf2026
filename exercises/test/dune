@@ -6,8 +6,14 @@
 (test
  (package exercises)
  (name dscheck_tests)
- (libraries alcotest atomic dscheck)
- (modules spsc_queue dscheck_tests))
+ (modules spsc_queue dscheck_tests)
+ (libraries alcotest atomic dscheck))
+
+(test
+ (package exercises)
+ (name tests)
+ (modules tests)
+ (libraries spsc_queue alcotest barrier))
 
 (test
  (package exercises)
