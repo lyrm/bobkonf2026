@@ -64,7 +64,6 @@ let try_push t element =
     true
   end
 
-(* *)
 let pop_opt t =
   let head = Atomic.get t.head in
   let tail_cache = t.tail_cache in
@@ -96,8 +95,6 @@ let peek_opt t =
     let index = head land (Array.length t.array - 1) in
     let v = Array.get t.array index in
     v
-
-(* *)
 
 let length t =
   let tail = Atomic.get t.tail in
