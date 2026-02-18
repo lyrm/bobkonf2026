@@ -12,10 +12,7 @@ bug-reports: "https://github.com/username/reponame/issues"
 depends: [
   "dune" {>= "3.20"}
   "ocaml"
-  "alcotest" {with-test}
   "dscheck" {with-test}
-  "qcheck-core" {with-test}
-  "qcheck-multicoretests-util" {with-test}
   "qcheck-stm" {with-test}
   "odoc" {with-doc}
 ]

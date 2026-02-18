@@ -21,10 +21,7 @@
  (description "A longer description")
  (depends
   ocaml
-  (alcotest :with-test)
   (dscheck :with-test)
-  (qcheck-core :with-test)
-  (qcheck-multicoretests-util :with-test)
   (qcheck-stm :with-test))
  (tags
   ("add topics" "to describe" your project)))
