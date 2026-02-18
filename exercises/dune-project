@@ -5,7 +5,7 @@
 (generate_opam_files true)
 
 (source
- (github username/reponame))
+ (github lyrm/bobkonf2026))
 
 (authors "Carine Morel <carine@tarides.com>")
 
@@ -13,18 +13,16 @@
 
 (license ISC)
 
-(documentation https://url/to/documentation)
-
 (package
  (name exercises)
  (synopsis "A short synopsis")
  (description "A longer description")
  (depends
-  ocaml
+  (ocaml
+   (>= 5.2.0))
   (alcotest :with-test)
   (dscheck :with-test)
-  (qcheck-core :with-test)
-  (qcheck-multicoretests-util :with-test)
-  (qcheck-stm :with-test))
+  (qcheck-stm :with-test)
+  (qcheck-lin :with-test))
  (tags
   ("add topics" "to describe" your project)))
