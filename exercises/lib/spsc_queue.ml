@@ -57,8 +57,8 @@ let try_push t element =
   then false
   else begin
     (* First possible race conditions: exchange incr and set (it should be first set than incr) *)
-    Atomic.incr t.tail;
     Array.set t.array (tail land (size - 1)) (Some element);
+    Atomic.incr t.tail;
     true
   end
 

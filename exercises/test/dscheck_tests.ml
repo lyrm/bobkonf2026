@@ -34,8 +34,8 @@ can't work because it's a  single producer single consumer queue *)
 
 let test_push_pop () =
   Dscheck.trace (fun () ->
-      let queue = Queue.create ~size_exponent:6 in
-      let items_total = 4 in
+      let queue = Queue.create ~size_exponent:4 in
+      let items_total = 5 in
       let elt_to_push = List.init items_total (fun i -> i + 1) in
 
       Dscheck.spawn (fun () ->
