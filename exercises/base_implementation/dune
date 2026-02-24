@@ -1,0 +1,7 @@
+(library
+ (package exercise1)
+ (name treiber_stack)
+ (libraries backoff utils))
+
+; the deps on `utils` library is here only so it is directly available while 
+; running the top level with `dune utop` command.  
