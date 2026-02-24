@@ -1,28 +1,31 @@
-(rule
- (action
-  (copy ../lib/spsc_queue.ml spsc_queue.ml))
- (package exercises))
-
 (test
  (package exercises)
- (name dscheck_tests)
- (modules spsc_queue dscheck_tests)
- (libraries alcotest atomic dscheck))
-
-(test
- (package exercises)
- (name tests)
- (modules tests)
+ (name ex1_tests)
+ (modules ex1_tests)
  (libraries spsc_queue alcotest barrier))
 
-(test
- (package exercises)
- (name qcheck_stm_tests)
- (modules qcheck_stm_tests)
- (libraries
-  spsc_queue
-  qcheck-core
-  qcheck-multicoretests-util
-  qcheck-stm.stm
-  qcheck-stm.domain
-  qcheck-stm.sequential))
+;; HINT: to uncomment, 
+;; - on VCode, use Ctrl+/
+;; - on Emacs, use M-x comment-dwim
+
+;; To uncomment for exercise 2 
+; (test
+;  (package exercises)
+;  (name qcheck_stm_tests)
+;  (modules qcheck_stm_tests)
+;  (libraries
+;   spsc_queue
+;   qcheck-stm.stm
+;   qcheck-stm.domain
+;   qcheck-stm.sequential))
+
+;; To uncomment for exercise 3
+; (rule
+;  (action
+;   (copy ../lib/spsc_queue.ml spsc_queue.ml))
+;  (package exercises))
+; (test
+;  (package exercises)
+;  (name dscheck_tests)
+;  (modules spsc_queue dscheck_tests)
+;  (libraries alcotest atomic dscheck))

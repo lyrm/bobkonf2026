@@ -30,9 +30,6 @@ type 'a t = {
   mutable head_cache : int;
 }
 
-exception Full
-exception Empty
-
 (* *)
 let create ~size_exponent =
   if size_exponent < 0 || Sys.int_size - 2 < size_exponent then
