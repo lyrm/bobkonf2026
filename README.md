@@ -1,7 +1,7 @@
-# bobkonf2026
-Bobkonf 2026 tutorial on multicore safety in OCaml
+# Parallelism without panic: a user’s guide to multicore safety in OCaml
+**Bobkonf**, March 13th 2026
 
-##
+## Setup
 
 You can run the exercices in your browser, using the provided [devcontainer](https://containers.dev/) setup, in GitHub [Codespaces](https://github.com/features/codespaces). Just select “Create codespace on main” from the “Codespaces” tab in the “Code” menu. You'll get started in a few minutes. Alternative options that requires cloning this repo, include the following ones:
 
