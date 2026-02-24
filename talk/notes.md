@@ -1,3 +1,11 @@
+# Notes 
+La spsc ne peut pas avoir de race conditions -> seulement des data races.
+Mpsc -> 
+- races conditions facile 
+- data races en faisant le retournement de liste par les producteurs ?
+- mesures de longueur par les producteurs
+
+
 # Abstract
 OCaml has a reputation for keeping its promises: strong types, solid abstractions, and very few runtime surprises. Multicore parallelism changes the rules a bit: suddenly, we can encounter race conditions, the kind of bugs that only show up at 3 AM, disappear when you add a print statement, and return months later just to spite you. If we want to stay in OCaml’s comfort zone, we need good tools.
 
