@@ -1,0 +1,17 @@
+{
+  "name": "OxCaml",
+  "image": "cuihtlauac/oxcaml-devcontainer:latest",
+  "customizations": {
+    "vscode": {
+      "extensions": ["ocamllabs.ocaml-platform"],
+      "settings": {
+        "ocaml.sandbox": {
+          "kind": "opam",
+          "switch": "oxcaml"
+        }
+      }
+    }
+  },
+  "workspaceFolder": "/workspaces/${localWorkspaceFolderBasename}/exercises",
+  "postStartCommand": "opam switch set oxcaml && eval $(opam env)"
+}
