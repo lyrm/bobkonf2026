@@ -11,6 +11,10 @@ opam switch create ocaml ocaml-base-compiler.5.4.0 --yes
 ```
 
 ```bash
+eval $(opam env --switch ocaml)
+```
+
+```bash
 opam install -y dune ocaml-lsp-server merlin utop alcotest dscheck qcheck-stm qcheck-lin
 ```
 
@@ -31,12 +35,23 @@ opam switch create ocaml+tsan ocaml-variants.5.4.0+options ocaml-option-tsan --y
 ```
 
 ```bash
+eval $(opam env --switch ocaml+tsan)
+```
+
+
+```bash
 opam install -y dune ocaml-lsp-server merlin utop alcotest dscheck qcheck-stm qcheck-lin
 ```
 
-## `oxcaml` switch
+## (Optional, only if you are curious to try) `oxcaml` switch 
 
 OxCaml 5.2.0+ox from the Jane Street `opam` repository. Note: `utop` did not compile with OxCaml at the time of writing this document. Check `autoconf` and `rsync` are installed on your system, before creating the switch.
+
+More info about OxCaml can be found on [the official website](https://oxcaml.org/).
+
+```bash
+opam update --all
+```
 
 ```bash
 opam switch create oxcaml \
@@ -45,5 +60,9 @@ opam switch create oxcaml \
 ```
 
 ```bash
-opam install -y dune ocaml-lsp-server merlin alcotest dscheck qcheck-stm qcheck-lin
+eval $(opam env --switch oxcaml)
+```
+
+```bash
+opam install -y ocamlformat merlin ocaml-lsp-server
 ```
