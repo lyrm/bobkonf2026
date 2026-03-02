@@ -14,7 +14,7 @@ You can run the exercises in your browser, using the provided [devcontainer](htt
 --- 
 ### (20-30 minutes) Local setup
 
-If you already have your own OCaml environment installed, clone this repository and see [CONFIG](CONFIG.md) for details
+If you already have your own OCaml environment installed, clone this repository and see [SETUP](SETUP.md) for details
 
 ---
 
