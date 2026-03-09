@@ -8,7 +8,7 @@ let test_push_pop (() : unit) : bool =
   let stack = Stack.create () in
   let barrier = Barrier.create 2 in
 
-  (* Work done by the first domain (i.e. thread). *)
+  (* Work to run on the first domain (i.e. thread). *)
   let prod_work () =
     (* The barrier prevents each domain from starting its work before
        the other domain is ready, increasing the likelihood of them
@@ -17,7 +17,7 @@ let test_push_pop (() : unit) : bool =
     Stack.push stack 42
   in
 
-  (* Work done by the second domain. *)
+  (* Work to run on the second domain. *)
   let cons_work () =
     Barrier.await barrier;
     Stack.pop_opt stack
@@ -32,8 +32,7 @@ let test_push_pop (() : unit) : bool =
   let () = Domain.join producer in
   let popped = Domain.join consumer in
 
-  (* ************* *)
-  (* Properties that should hold *)
+  (* Properties that should hold after both domains finish *)
   let remaining = drain_all stack in
 
   match (popped, remaining) with

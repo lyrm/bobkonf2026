@@ -137,7 +137,7 @@ For more on OCaml's memory model:
 - https://ocaml.org/manual/5.4/memorymodel.html
 
 ### Exercise: Catching the data races
-To catch a data race, we use the same tool that other languages use: ThreadSanitizer (TSan). TSan instruments the compiler to detect data races during execution.
+To catch a data race, we use the same tool that other languages use: ThreadSanitizer ([TSan](https://ocaml.org/manual/5.3/tsan.html)). TSan instruments the compiler to detect data races during execution.
 
 To run the test with TSan, you need to use the second switch where TSan is enabled. You can switch to it with the following command:
 
