@@ -8,7 +8,7 @@ let test_push_pop () =
   let stack = Stack.create () in
   let barrier = Barrier.create 2 in
 
-  (* Work done by the first domain (i.e. thread).*)
+  (* Work to run on the first domain (i.e. thread). *)
   let prod_work () =
     Barrier.await barrier;
     Stack.push stack 1;
@@ -16,7 +16,7 @@ let test_push_pop () =
     Stack.push stack 3
   in
 
-  (* Work done by the second domain. *)
+  (* Work to run on the second domain. *)
   let cons_work () =
     Barrier.await barrier;
     let _ = Stack.pop_opt stack in
@@ -40,7 +40,8 @@ let test_push_pop () =
   let len_remaining = List.length remaining in
   size = len_remaining
 
-(* This is just the infrastructure to run the tests *)
+(* The following is the infrastructure to launch the tests using Alcotest,
+   which gives us a nice output. *)
 let () =
   let nrepeat = 10000 in
   let open Alcotest in

@@ -45,7 +45,7 @@ Here is the diff between the two implementations:
 
 ## Objective
 
-The objective of this exercise is to find and write a test that catches the existing bug in the implementation with the help of a test generator (called `qcheck-lin`) and then translate this test to a model checker (called `dscheck`) to obtain a trace of the bug.
+The objective of this exercise is to find and write a test that catches the existing bug in the implementation with the help of a test generator (called [`qcheck-lin`](https://github.com/ocaml-multicore/multicoretests)) and then translate this test to a model checker (called [`dscheck`](https://github.com/ocaml-multicore/dscheck)) to obtain a trace of the bug.
 
 ## 1. Checking the data race is gone
 
@@ -70,7 +70,7 @@ There is still a bug in this implementation. To find it, we could study the code
 
 In our case, we are going to use a tool called `qcheck-lin`. This tool is based on QCheck, a property-based testing library in the style of QuickCheck from Haskell.
 
-### About `qcheck-lin`
+### About [`qcheck-lin`](https://github.com/ocaml-multicore/multicoretests)
 
 `qcheck-lin` provides an embedded combinator DSL to describe the signature of the library under test succinctly. From this description, it generates random sequences of commands, executes them in parallel, and checks whether the observed results can be explained by some sequential execution (this is called *linearizability*).
 
@@ -115,7 +115,7 @@ In the case of the Treiber stack, having a failing test may be enough to find th
 ## 3. `dscheck` test to find a trace of the bug
 
 
-### About `dscheck`
+### About [`dscheck`](https://github.com/ocaml-multicore/dscheck)
 
 `dscheck` instruments the `Atomic` module to compute and explore all possible interleavings of the atomic operations performed in a test. If a test fails, it reports a trace of the first failing interleaving it finds. This trace can then be used to locate the bug in the implementation. Because it is exhaustive and nothing is actually run concurrently, `dscheck` is deterministic: if there is a bug reachable by the written test, it will always find it.
 
