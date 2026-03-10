@@ -79,11 +79,12 @@
 > > - Build a test that consistently fails 
 > > - Find a trace to the bug with ThreadSanitizer
 > 
-> {.block .box reveal #ex2}
+<!-- > {.block .box reveal #ex2}
 > > 📝 Exercise 2: race conditions on atomic operations
 > > - A new implementation with an atomic size field
-> > - Find a test that fails with a test generator
-> > - Find a trace of the bug with a model checker
+> > - Find a test that fails with `qcheck-lin`
+> > - Find a trace of the bug with a model checker (`dscheck`)  -->
+
 
 ---
 

@@ -1083,6 +1083,7 @@ relevance:0},{begin:/-&gt;/}]})})();hljs.registerLanguage(&quot;ocaml&quot;,e)})
 &lt;div class=&quot;slip&quot;&gt;
 &lt;div class=&quot;slip-body&quot;&gt;
 &lt;div&gt;
+&lt;div&gt;
 &lt;!-- slipshow serve -o presentation/presentation.html presentation/presentation.md --&gt;
 &lt;div id=&quot;beginning&quot;&gt;&lt;/div&gt;
 &lt;p&gt;&lt;h1 style=&quot;text-align: center;&quot;&gt;&lt;span&gt;Parallelism without panic: &lt;/span&gt;&lt;/h1&gt;
@@ -1092,14 +1093,14 @@ relevance:0},{begin:/-&gt;/}]})})();hljs.registerLanguage(&quot;ocaml&quot;,e)})
 &lt;pre&gt;&lt;code class=&quot;language-shell&quot;&gt;https://github.com/lyrm/bobkonf2026#setup
 &lt;/code&gt;&lt;/pre&gt;
 &lt;p&gt;&lt;span&gt;You also need to clone the following repository, which contains the exercises we will be working on during the tutorial:&lt;/span&gt;&lt;/p&gt;
-&lt;pre&gt;&lt;code class=&quot;language-shell&quot;&gt;git clone https://github.com/lyrm/bobkonf2026.git
+&lt;pre&gt;&lt;code class=&quot;language-shell&quot;&gt;git clone git@github.com:lyrm/bobkonf2026.git
 &lt;/code&gt;&lt;/pre&gt;
 &lt;p&gt;&lt;span&gt;If you cloned it sooner this week, make sure to pull the latest changes!&lt;/span&gt;&lt;/p&gt;
 &lt;h2 up-at-unpause pause&gt;&lt;span&gt;OCaml&lt;/span&gt;&lt;/h2&gt;
 &lt;ul&gt;
 &lt;li&gt;&lt;span&gt;Functional-first but multi-paradigm (supports imperative and object-oriented styles)&lt;/span&gt;&lt;/li&gt;
 &lt;li&gt;&lt;span&gt;Static type system with Hindley–Milner type inference&lt;/span&gt;&lt;/li&gt;
-&lt;li&gt;&lt;span&gt;Advanced features — powerful module system, GADTs, polymorphic variants &lt;/span&gt;&lt;span pause&gt;&lt;/span&gt;&lt;/li&gt;
+&lt;li&gt;&lt;span&gt;Advanced features: powerful module system, GADTs, polymorphic variants &lt;/span&gt;&lt;span pause&gt;&lt;/span&gt;&lt;/li&gt;
 &lt;li&gt;&lt;span&gt;Since December 2022 (OCaml 5): Multicore support and effect handlers&lt;/span&gt;&lt;/li&gt;
 &lt;/ul&gt;
 &lt;p pause&gt;&lt;strong&gt;&lt;span&gt;Before OCaml 5&lt;/span&gt;&lt;/strong&gt;&lt;span&gt;: most bugs are caught at compile time,&lt;/span&gt;&lt;/p&gt;
@@ -1225,13 +1226,13 @@ relevance:0},{begin:/-&gt;/}]})})();hljs.registerLanguage(&quot;ocaml&quot;,e)})
 &lt;/code&gt;&lt;/pre&gt;
 &lt;pre pause&gt;&lt;code class=&quot;language-ocaml&quot;&gt;let create () = { stack = Atomic.make [] }
 &lt;/code&gt;&lt;/pre&gt;
-&lt;pre pause&gt;&lt;code class=&quot;language-ocaml&quot;&gt;let rec push_ t value backoff =
+&lt;pre pause&gt;&lt;code class=&quot;language-ocaml&quot;&gt;let rec push_ t v backoff =
   let before = Atomic.get t.stack in
-  let after = value :: before in
+  let after = v :: before in
   if Atomic.compare_and_set t.stack before after then ()
-  else push_ t value (Backoff.once backoff)
+  else push_ t v (Backoff.once backoff)
 
-let push t value = push_ t value Backoff.default
+let push t v = push_ t v Backoff.default
 &lt;/code&gt;&lt;/pre&gt;
 &lt;pre pause&gt;&lt;code class=&quot;language-ocaml&quot;&gt;let rec pop_opt_ t backoff =
   match Atomic.get t.stack with
@@ -1287,15 +1288,15 @@ let pop_opt t = pop_opt_ t Backoff.default
 let create () = { stack = Atomic.make []}
 
 
-let rec push_ t value backoff =
+let rec push_ t v backoff =
 let before = Atomic.get t.stack in
- let after = value :: before in
+ let after = v :: before in
  if Atomic.compare_and_set t.stack before after then 
    ()
  else 
-   push_ t value (Backoff.once backoff)
+   push_ t v (Backoff.once backoff)
 
-let push t value = push_ t value Backoff.default
+let push t v = push_ t v Backoff.default
 
 let rec pop_opt_ t backoff =
  match Atomic.get t.stack with
@@ -1317,15 +1318,15 @@ let pop_opt t = pop_opt_ t Backoff.default
 let create () = { stack = Atomic.make []; size = ref 0 }
 
 
-let rec push_ t value backoff =
+let rec push_ t v backoff =
 let before = Atomic.get t.stack in
- let after = value :: before in
+ let after = v :: before in
  if Atomic.compare_and_set t.stack before after then 
    ()
  else 
-   push_ t value (Backoff.once backoff)
+   push_ t v (Backoff.once backoff)
 
-let push t value = push_ t value Backoff.default
+let push t v = push_ t v Backoff.default
 
 let rec pop_opt_ t backoff =
  match Atomic.get t.stack with
@@ -1347,15 +1348,15 @@ let pop_opt t = pop_opt_ t Backoff.default
 let create () = { stack = Atomic.make []; size = ref 0 }
 let size t = !(t.size)
 
-let rec push_ t value backoff =
+let rec push_ t v backoff =
 let before = Atomic.get t.stack in
- let after = value :: before in
+ let after = v :: before in
  if Atomic.compare_and_set t.stack before after then 
    ()
  else 
-   push_ t value (Backoff.once backoff)
+   push_ t v (Backoff.once backoff)
 
-let push t value = push_ t value Backoff.default
+let push t v = push_ t v Backoff.default
 
 let rec pop_opt_ t backoff =
  match Atomic.get t.stack with
@@ -1377,15 +1378,15 @@ let pop_opt t = pop_opt_ t Backoff.default
 let create () = { stack = Atomic.make []; size = ref 0 }
 let size t = !(t.size)
 
-let rec push_ t value backoff =
+let rec push_ t v backoff =
 let before = Atomic.get t.stack in
- let after = value :: before in
+ let after = v :: before in
  if Atomic.compare_and_set t.stack before after then 
    incr t.size
  else 
-   push_ t value (Backoff.once backoff)
+   push_ t v (Backoff.once backoff)
 
-let push t value = push_ t value Backoff.default
+let push t v = push_ t v Backoff.default
 
 let rec pop_opt_ t backoff =
  match Atomic.get t.stack with
@@ -1407,15 +1408,15 @@ let pop_opt t = pop_opt_ t Backoff.default
 let create () = { stack = Atomic.make []; size = ref 0 }
 let size t = !(t.size)
 
-let rec push_ t value backoff =
+let rec push_ t v backoff =
 let before = Atomic.get t.stack in
- let after = value :: before in
+ let after = v :: before in
  if Atomic.compare_and_set t.stack before after then 
    incr t.size
  else 
-   push_ t value (Backoff.once backoff)
+   push_ t v (Backoff.once backoff)
 
-let push t value = push_ t value Backoff.default
+let push t v = push_ t v Backoff.default
 
 let rec pop_opt_ t backoff =
  match Atomic.get t.stack with
@@ -1441,15 +1442,12 @@ let pop_opt t = pop_opt_ t Backoff.default
 &lt;li&gt;&lt;span&gt;Find a trace to the bug with ThreadSanitizer&lt;/span&gt;&lt;/li&gt;
 &lt;/ul&gt;
 &lt;/div&gt;
-&lt;div id=&quot;ex2&quot; class=&quot;block box&quot; reveal-at-unpause&gt;
-&lt;p&gt;&lt;span&gt;📝 Exercise 2: race conditions on atomic operations&lt;/span&gt;&lt;/p&gt;
-&lt;ul&gt;
-&lt;li&gt;&lt;span&gt;A new implementation with an atomic size field&lt;/span&gt;&lt;/li&gt;
-&lt;li&gt;&lt;span&gt;Find a test that fails with a test generator&lt;/span&gt;&lt;/li&gt;
-&lt;li&gt;&lt;span&gt;Find a trace of the bug with a model checker&lt;/span&gt;&lt;/li&gt;
-&lt;/ul&gt;
 &lt;/div&gt;
-&lt;/div&gt;
+&lt;!-- &gt; {.block .box reveal #ex2}
+&gt; &gt; 📝 Exercise 2: race conditions on atomic operations
+&gt; &gt; - A new implementation with an atomic size field
+&gt; &gt; - Find a test that fails with `qcheck-lin`
+&gt; &gt; - Find a trace of the bug with a model checker (`dscheck`)  --&gt;
 &lt;/div&gt;
 &lt;/div&gt;
 &lt;h2 up-at-unpause=part2 pause&gt;&lt;span&gt;Race conditions and data races &lt;/span&gt;&lt;span id=&quot;part2&quot;&gt;&lt;/span&gt;&lt;/h2&gt;
@@ -1557,7 +1555,7 @@ Hello from domain 1
 &lt;/ol&gt;
 &lt;div id=&quot;data-race&quot;&gt;
 &lt;p&gt;&lt;span style=&quot;color: crimson&quot;&gt;&lt;strong&gt;&lt;span&gt;An unpredictable bug&lt;/span&gt;&lt;/strong&gt;&lt;span&gt;, caused by compiler and architecture optimization!&lt;/span&gt;&lt;/span&gt;&lt;/p&gt;
-&lt;p&gt;&lt;span&gt;But, in OCaml, a data-race can't cause a crash.&lt;/span&gt;&lt;/p&gt;
+&lt;p&gt;&lt;span&gt;But, in OCaml, a data race can't cause a crash.&lt;/span&gt;&lt;/p&gt;
 &lt;/div&gt;
 &lt;/div&gt;
 &lt;div class=&quot;block inner-box&quot; pause&gt;
@@ -1565,14 +1563,14 @@ Hello from domain 1
 &lt;ul&gt;
 &lt;li&gt;&lt;span&gt;reference cells (&lt;/span&gt;&lt;code&gt;ref&lt;/code&gt;&lt;span&gt;)&lt;/span&gt;&lt;/li&gt;
 &lt;li&gt;&lt;span&gt;mutable record fields (&lt;/span&gt;&lt;code&gt;{mutable field : ...}&lt;/code&gt;&lt;span&gt;)&lt;/span&gt;&lt;/li&gt;
-&lt;li&gt;&lt;span&gt;arrays (&lt;/span&gt;&lt;code&gt;Array&lt;/code&gt;&lt;span&gt; and &lt;/span&gt;&lt;code&gt;Bigarray&lt;/code&gt;&lt;span&gt;) &lt;/span&gt;&lt;span reveal-at-unpause=data-race&gt;&lt;/span&gt;&lt;/li&gt;
+&lt;li&gt;&lt;span&gt;arrays (&lt;/span&gt;&lt;code&gt;Array&lt;/code&gt;&lt;span&gt;)&lt;/span&gt;&lt;/li&gt;
 &lt;/ul&gt;
 &lt;/div&gt;
 &lt;/div&gt;
 &lt;/div&gt;
-&lt;div pause&gt;&lt;/div&gt;
+&lt;div reveal-at-unpause=data-race&gt;&lt;/div&gt;
 &lt;/div&gt;
-&lt;div class=&quot;example-columns&quot;&gt;
+&lt;div class=&quot;example-columns&quot; pause down-at-unpause&gt;
 &lt;div&gt;
 &lt;h4&gt;&lt;span&gt;Example&lt;/span&gt;&lt;/h4&gt;
 &lt;pre&gt;&lt;code class=&quot;language-ocaml&quot;&gt;let a = ref 0 and b = ref 0
@@ -1603,11 +1601,264 @@ let main () =
 &lt;/div&gt;
 &lt;/div&gt;
 &lt;div up-at-unpause=part2 pause&gt;&lt;/div&gt;
+&lt;div up-at-unpause pause src=2-concl-ex1.md include&gt;
+&lt;h3&gt;&lt;span&gt;Solution of exercise 1: Data races  on &lt;/span&gt;&lt;code&gt;int ref&lt;/code&gt;&lt;/h3&gt;
+&lt;style&gt;
+.interleaving-ex1 {
+  font-size: 0.85em;
+}
+.interleaving-ex1 table {
+  border-collapse: collapse;
+  width: 100%;
+}
+.interleaving-ex1 th, .interleaving-ex1 td {
+  padding: 0.3em 0.6em;
+  text-align: left;
+  border-bottom: 1px solid #ddd;
+}
+.interleaving-ex1 th {
+  font-weight: bold;
+  border-bottom: 2px solid #888;
+}
+.interleaving-ex1 .bug {
+  color: crimson;
+  font-weight: bold;
+}
+&lt;/style&gt;
+&lt;p&gt;&lt;code&gt;incr&lt;/code&gt;&lt;span&gt;/&lt;/span&gt;&lt;code&gt;decr&lt;/code&gt;&lt;span&gt; on &lt;/span&gt;&lt;code&gt;int ref&lt;/code&gt;&lt;span&gt; are &lt;/span&gt;&lt;strong&gt;&lt;span&gt;not atomic&lt;/span&gt;&lt;/strong&gt;&lt;span&gt;: they expand to a read then a write.&lt;/span&gt;&lt;/p&gt;
+&lt;pre&gt;&lt;code class=&quot;language-ocaml&quot;&gt;let incr r = r := !r + 1
+let decr r = r := !r - 1
+&lt;/code&gt;&lt;/pre&gt;
+&lt;div class=&quot;interleaving-ex1 block&quot;&gt;
+&lt;div role=&quot;region&quot;&gt;&lt;table&gt;
+&lt;tr&gt;
+&lt;th&gt;&lt;span&gt;Step&lt;/span&gt;&lt;/th&gt;
+&lt;th&gt;&lt;span&gt;Domain 1 (&lt;/span&gt;&lt;code&gt;push 42&lt;/code&gt;&lt;span&gt;)&lt;/span&gt;&lt;/th&gt;
+&lt;th&gt;&lt;span&gt;Domain 2 (&lt;/span&gt;&lt;code&gt;pop&lt;/code&gt;&lt;span&gt;)&lt;/span&gt;&lt;/th&gt;
+&lt;th&gt;&lt;code&gt;size&lt;/code&gt;&lt;span&gt; (ref)&lt;/span&gt;&lt;/th&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;&lt;span&gt;1&lt;/span&gt;&lt;/td&gt;
+&lt;td&gt;&lt;code&gt;read size&lt;/code&gt;&lt;span&gt; → 0&lt;/span&gt;&lt;/td&gt;
+&lt;td&gt;&lt;/td&gt;
+&lt;td&gt;&lt;span&gt;0&lt;/span&gt;&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;&lt;span&gt;2&lt;/span&gt;&lt;/td&gt;
+&lt;td&gt;&lt;/td&gt;
+&lt;td&gt;&lt;code&gt;read size&lt;/code&gt;&lt;span&gt; → 0&lt;/span&gt;&lt;/td&gt;
+&lt;td&gt;&lt;span&gt;0&lt;/span&gt;&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;&lt;span&gt;3&lt;/span&gt;&lt;/td&gt;
+&lt;td&gt;&lt;code&gt;write size&lt;/code&gt;&lt;span&gt; ← 0 + 1&lt;/span&gt;&lt;/td&gt;
+&lt;td&gt;&lt;/td&gt;
+&lt;td&gt;&lt;span&gt;1&lt;/span&gt;&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;&lt;span&gt;4&lt;/span&gt;&lt;/td&gt;
+&lt;td&gt;&lt;/td&gt;
+&lt;td&gt;&lt;code&gt;write size&lt;/code&gt;&lt;span&gt; ← 0 - 1&lt;/span&gt;&lt;/td&gt;
+&lt;td&gt;&lt;span class=&quot;bug&quot;&gt;&lt;strong&gt;&lt;span&gt;-1&lt;/span&gt;&lt;/strong&gt;&lt;/span&gt;&lt;/td&gt;
+&lt;/tr&gt;
+&lt;/table&gt;&lt;/div&gt;&lt;/div&gt;
+&lt;div pause&gt;&lt;/div&gt;
+&lt;div class=&quot;block box&quot;&gt;
+&lt;p&gt;&lt;strong&gt;&lt;span&gt;Data race (lost update):&lt;/span&gt;&lt;/strong&gt;&lt;span&gt; both domains read &lt;/span&gt;&lt;code&gt;size = 0&lt;/code&gt;&lt;span&gt; before either writes. Domain 1 writes &lt;/span&gt;&lt;code&gt;1&lt;/code&gt;&lt;span&gt; (incr), then Domain 2 overwrites it with &lt;/span&gt;&lt;code&gt;-1&lt;/code&gt;&lt;span&gt; (decr). The stack has 1 element but &lt;/span&gt;&lt;code&gt;size&lt;/code&gt;&lt;span&gt; is &lt;/span&gt;&lt;span class=&quot;bug&quot;&gt;&lt;strong&gt;&lt;span&gt;-1&lt;/span&gt;&lt;/strong&gt;&lt;/span&gt;&lt;span&gt;.&lt;/span&gt;&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;&lt;span&gt;Note:&lt;/span&gt;&lt;/strong&gt;&lt;span&gt; this bug is actually a scheduler issue: a bad interleaving. It can happen on any architecture, without any compiler or hardware reordering. The data race classification still matters: with non-atomic accesses, OCaml could also produce even weirder behaviors on top of this.&lt;/span&gt;&lt;/p&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;h3 up-at-unpause pause&gt;&lt;span&gt;Second pitfall: atomic size field&lt;/span&gt;&lt;/h3&gt;
+&lt;/div&gt;
+&lt;div id=&quot;phases&quot; class=&quot;columns-2b&quot;&gt;
+&lt;div src=2-atomic-implem.md include&gt;
+&lt;div class=&quot;slipshow__carousel&quot; carousel change-page='~n:&quot;all&quot;'&gt;
+&lt;div class=&quot;slipshow__carousel_active slipshow__carousel_children&quot;&gt;
+&lt;div&gt;
+&lt;!-- original implem --&gt;
+&lt;pre&gt;&lt;code class=&quot;language-ocaml&quot;&gt;type 'a t = { stack : 'a list Atomic.t; size : int ref }
+let create () = { stack = Atomic.make []; size = ref 0 }
+let size t = !(t.size)
+
+let rec push_ t v backoff =
+let before = Atomic.get t.stack in
+ let after = v :: before in
+ if Atomic.compare_and_set t.stack before after then 
+   incr t.size
+ else 
+   push_ t v (Backoff.once backoff)
+
+let push t v = push_ t v Backoff.default
+
+let rec pop_opt_ t backoff =
+ match Atomic.get t.stack with
+ | [] -&amp;gt; None
+ | hd :: tail as before -&amp;gt;
+   if Atomic.compare_and_set t.stack before tail then (
+       decr t.size;
+       Some hd)
+   else
+       pop_opt_ t (Backoff.once backoff)
+
+let pop_opt t = pop_opt_ t Backoff.default
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div class=&quot;slipshow__carousel_children&quot;&gt;
+&lt;pre&gt;&lt;code class=&quot;language-ocaml&quot;&gt;type 'a t = { stack : 'a list Atomic.t; size : int Atomic.t }
+let create () = { stack = Atomic.make []; size = Atomic.make 0 }
+let size t = Atomic.get t.size
+
+let rec push_ t v backoff =
+let before = Atomic.get t.stack in
+ let after = v :: before in
+ if Atomic.compare_and_set t.stack before after then 
+   Atomic.incr t.size
+ else 
+   push_ t v (Backoff.once backoff)
+
+let push t v = push_ t v Backoff.default
+
+let rec pop_opt_ t backoff =
+ match Atomic.get t.stack with
+ | [] -&amp;gt; None
+ | hd :: tail as before -&amp;gt;
+   if Atomic.compare_and_set t.stack before tail then (
+       Atomic.decr t.size;
+       Some hd)
+   else
+       pop_opt_ t (Backoff.once backoff)
+
+let pop_opt t = pop_opt_ t Backoff.default
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div&gt;
+&lt;div id=&quot;ex2&quot; class=&quot;block box&quot; reveal-at-unpause&gt;
+&lt;p&gt;&lt;span&gt;📝 Exercise 2: race conditions on atomic operations&lt;/span&gt;&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;span&gt;A new implementation with an atomic size field&lt;/span&gt;&lt;/li&gt;
+&lt;li&gt;&lt;span&gt;Check the previous bug is gone with TSan&lt;/span&gt;&lt;/li&gt;
+&lt;li&gt;&lt;span&gt;Find a test that fails with &lt;/span&gt;&lt;code&gt;qcheck-lin&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;&lt;span&gt;Find a trace of the bug with a model checker (&lt;/span&gt;&lt;code&gt;dscheck&lt;/code&gt;&lt;span&gt;)&lt;/span&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div&gt;
+&lt;div up-at-unpause pause src=2-concl-ex2.md include&gt;
+&lt;h3&gt;&lt;span&gt;Solution of exercise 2: &lt;/span&gt;&lt;code&gt;push&lt;/code&gt;&lt;span&gt; and &lt;/span&gt;&lt;code&gt;pop&lt;/code&gt;&lt;span&gt; are not linearizable&lt;/span&gt;&lt;/h3&gt;
+&lt;style&gt;
+.interleaving {
+  font-size: 0.85em;
+}
+.interleaving table {
+  border-collapse: collapse;
+  width: 100%;
+}
+.interleaving th, .interleaving td {
+  padding: 0.3em 0.6em;
+  text-align: left;
+  border-bottom: 1px solid #ddd;
+}
+.interleaving th {
+  font-weight: bold;
+  border-bottom: 2px solid #888;
+}
+.interleaving .bug {
+  color: crimson;
+  font-weight: bold;
+}
+.interleaving .pop {
+  color: #2e7d32;
+}
+.interleaving .size {
+  color: #1565c0;
+}
+&lt;/style&gt;
+&lt;div class=&quot;interleaving block&quot;&gt;
+&lt;div role=&quot;region&quot;&gt;&lt;table&gt;
+&lt;tr&gt;
+&lt;th&gt;&lt;span&gt;Step&lt;/span&gt;&lt;/th&gt;
+&lt;th&gt;&lt;span&gt;Domain 1 (&lt;/span&gt;&lt;code&gt;push 1&lt;/code&gt;&lt;span&gt;)&lt;/span&gt;&lt;/th&gt;
+&lt;th&gt;&lt;span&gt;Domain 2 (&lt;/span&gt;&lt;span class=&quot;pop&quot;&gt;&lt;code&gt;pop&lt;/code&gt;&lt;/span&gt;&lt;span&gt;, &lt;/span&gt;&lt;span class=&quot;size&quot;&gt;&lt;code&gt;size&lt;/code&gt;&lt;/span&gt;&lt;span&gt;)&lt;/span&gt;&lt;/th&gt;
+&lt;th&gt;&lt;code&gt;stack&lt;/code&gt;&lt;/th&gt;
+&lt;th&gt;&lt;code&gt;size&lt;/code&gt;&lt;/th&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;&lt;span&gt;1&lt;/span&gt;&lt;/td&gt;
+&lt;td&gt;&lt;code&gt;Atomic.compare_and_set stack [1]&lt;/code&gt;&lt;/td&gt;
+&lt;td&gt;&lt;/td&gt;
+&lt;td&gt;&lt;code&gt;[1]&lt;/code&gt;&lt;/td&gt;
+&lt;td&gt;&lt;span&gt;0&lt;/span&gt;&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;&lt;span&gt;2&lt;/span&gt;&lt;/td&gt;
+&lt;td&gt;&lt;/td&gt;
+&lt;td&gt;&lt;span class=&quot;pop&quot;&gt;&lt;code&gt;Atomic.compare_and_set stack []&lt;/code&gt;&lt;/span&gt;&lt;/td&gt;
+&lt;td&gt;&lt;code&gt;[]&lt;/code&gt;&lt;/td&gt;
+&lt;td&gt;&lt;span&gt;0&lt;/span&gt;&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;&lt;span&gt;3&lt;/span&gt;&lt;/td&gt;
+&lt;td&gt;&lt;/td&gt;
+&lt;td&gt;&lt;span class=&quot;pop&quot;&gt;&lt;code&gt;Atomic.decr size&lt;/code&gt;&lt;/span&gt;&lt;/td&gt;
+&lt;td&gt;&lt;code&gt;[]&lt;/code&gt;&lt;/td&gt;
+&lt;td&gt;&lt;span class=&quot;bug&quot;&gt;&lt;strong&gt;&lt;span&gt;-1&lt;/span&gt;&lt;/strong&gt;&lt;/span&gt;&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;&lt;span&gt;4&lt;/span&gt;&lt;/td&gt;
+&lt;td&gt;&lt;/td&gt;
+&lt;td&gt;&lt;span class=&quot;size&quot;&gt;&lt;code&gt;Atomic.get size&lt;/code&gt;&lt;/span&gt;&lt;/td&gt;
+&lt;td&gt;&lt;code&gt;[]&lt;/code&gt;&lt;/td&gt;
+&lt;td&gt;&lt;span class=&quot;bug&quot;&gt;&lt;strong&gt;&lt;span&gt;-1&lt;/span&gt;&lt;/strong&gt;&lt;/span&gt;&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;&lt;span&gt;5&lt;/span&gt;&lt;/td&gt;
+&lt;td&gt;&lt;code&gt;Atomic.incr size&lt;/code&gt;&lt;/td&gt;
+&lt;td&gt;&lt;/td&gt;
+&lt;td&gt;&lt;code&gt;[]&lt;/code&gt;&lt;/td&gt;
+&lt;td&gt;&lt;span&gt;0&lt;/span&gt;&lt;/td&gt;
+&lt;/tr&gt;
+&lt;/table&gt;&lt;/div&gt;&lt;/div&gt;
+&lt;div pause&gt;&lt;/div&gt;
+&lt;div class=&quot;box block&quot;&gt;
+&lt;p&gt;&lt;strong&gt;&lt;span&gt;Not linearizable:&lt;/span&gt;&lt;/strong&gt;&lt;span&gt; after &lt;/span&gt;&lt;span class=&quot;pop&quot;&gt;&lt;code&gt;pop&lt;/code&gt;&lt;/span&gt;&lt;span&gt; succeeds (step 2), &lt;/span&gt;&lt;code&gt;size&lt;/code&gt;&lt;span&gt; is decremented to &lt;/span&gt;&lt;span class=&quot;bug&quot;&gt;&lt;strong&gt;&lt;span&gt;-1&lt;/span&gt;&lt;/strong&gt;&lt;/span&gt;&lt;span&gt; (step 3). Then &lt;/span&gt;&lt;span class=&quot;size&quot;&gt;&lt;code&gt;size&lt;/code&gt;&lt;/span&gt;&lt;span&gt; observes this impossible value (step 4). The &lt;/span&gt;&lt;code&gt;push&lt;/code&gt;&lt;span&gt; increment hasn't happened yet, so &lt;/span&gt;&lt;code&gt;size&lt;/code&gt;&lt;span&gt; temporarily goes negative.&lt;/span&gt;&lt;/p&gt;
+&lt;/div&gt;
+&lt;h3 up-at-unpause pause&gt;&lt;span&gt;A better implementation ?&lt;/span&gt;&lt;/h3&gt;
+&lt;p&gt;&lt;span&gt;See this &lt;/span&gt;&lt;a href=&quot;https://arxiv.org/pdf/2209.07100&quot;&gt;&lt;span&gt;paper&lt;/span&gt;&lt;/a&gt;&lt;span&gt;: it is actually not easy to add an efficient size function to a lockfree algorithm.&lt;/span&gt;&lt;/p&gt;
+&lt;div pause&gt;&lt;/div&gt;
+&lt;p&gt;&lt;span&gt;But, also, it does increase contention on the stack, the following will work:&lt;/span&gt;&lt;/p&gt;
+&lt;pre&gt;&lt;code class=&quot;language-ocaml&quot;&gt;type 'a s = { stack : 'a list; size : int }
+type 'a t = 'a s Atomic.t
+&lt;/code&gt;&lt;/pre&gt;
+&lt;pre pause&gt;&lt;code class=&quot;language-ocaml&quot;&gt;let create () = Atomic.make { stack = []; size = 0 }
+let size t = (Atomic.get t).size
+
+let rec pop_opt_ t backoff =
+  match Atomic.get t with
+  | { stack = []; size = _ } -&amp;gt; None
+  | { stack = hd :: tail; size } as before -&amp;gt;
+      if Atomic.compare_and_set t before { stack = tail; size = size - 1 } then
+        Some hd
+      else pop_opt_ t (Backoff.once backoff)
+
+let pop_opt t = pop_opt_ t Backoff.default
+
+let rec push_ t v backoff =
+  let before = Atomic.get t in
+  let after = { stack = v :: before.stack; size = before.size + 1 } in
+  if Atomic.compare_and_set t before after then ()
+  else push_ t v (Backoff.once backoff)
+
+let push t v = push_ t v Backoff.default
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
 &lt;h2 up-at-unpause=part3 pause&gt;&lt;span&gt;Conclusion on multicore-safety in OCaml &lt;/span&gt;&lt;span id=&quot;part3&quot;&gt;&lt;/span&gt;&lt;/h2&gt;
 &lt;div src=3-conclusion.md include&gt;
 &lt;div&gt;
-&lt;div pause&gt;&lt;/div&gt;
-&lt;h3&gt;&lt;span&gt;The tools exist&lt;/span&gt;&lt;/h3&gt;
+&lt;h3 up-at-unpause pause&gt;&lt;span&gt;The tools exist&lt;/span&gt;&lt;/h3&gt;
 &lt;style&gt;
 .tool-columns {
   display: flex;
@@ -1630,14 +1881,14 @@ let main () =
 &lt;/div&gt;
 &lt;div&gt;
 &lt;p&gt;&lt;span&gt;Detects data races at runtime&lt;/span&gt;&lt;/p&gt;
-&lt;p&gt;&lt;span&gt;Generates concurrent tests automatically&lt;/span&gt;&lt;/p&gt;
+&lt;p&gt;&lt;span&gt;Generates concurrent tests automatically and check for linearizability&lt;/span&gt;&lt;/p&gt;
 &lt;p&gt;&lt;span&gt;Model-checks all interleavings of atomic operations&lt;/span&gt;&lt;/p&gt;
 &lt;/div&gt;
 &lt;/div&gt;
 &lt;div&gt;
 &lt;div pause&gt;&lt;/div&gt;
 &lt;h3&gt;&lt;span&gt;But some are still maturing&lt;/span&gt;&lt;/h3&gt;
-&lt;p&gt;&lt;span&gt;Especially &lt;/span&gt;&lt;strong&gt;&lt;span&gt;dscheck&lt;/span&gt;&lt;/strong&gt;&lt;span&gt; :  powerful but still young&lt;/span&gt;&lt;/p&gt;
+&lt;p&gt;&lt;span&gt;Especially &lt;/span&gt;&lt;strong&gt;&lt;span&gt;dscheck&lt;/span&gt;&lt;/strong&gt;&lt;span&gt; :&lt;/span&gt;&lt;/p&gt;
 &lt;ul&gt;
 &lt;li&gt;&lt;span&gt;limited documentation,&lt;/span&gt;&lt;/li&gt;
 &lt;li&gt;&lt;span&gt;does not work on project with other synchronization mechanism like mutexes, condition variables, etc.&lt;/span&gt;&lt;/li&gt;
@@ -1649,37 +1900,10 @@ let main () =
 &lt;li&gt;&lt;strong&gt;&lt;span&gt;Run them with TSan&lt;/span&gt;&lt;/strong&gt;&lt;span&gt; to catch data races&lt;/span&gt;&lt;/li&gt;
 &lt;li&gt;&lt;strong&gt;&lt;span&gt;Feed failing scenarios to dscheck&lt;/span&gt;&lt;/strong&gt;&lt;span&gt; to get a full trace of the bug&lt;/span&gt;&lt;/li&gt;
 &lt;/ol&gt;
-&lt;h3 up-at-unpause pause&gt;&lt;span&gt;But, what about the size function?&lt;/span&gt;&lt;/h3&gt;
-&lt;p&gt;&lt;span&gt;See this &lt;/span&gt;&lt;a href=&quot;https://arxiv.org/pdf/2209.07100&quot;&gt;&lt;span&gt;paper&lt;/span&gt;&lt;/a&gt;&lt;span&gt;: it is actually not easy to add a size function to a lockfree algorithm.&lt;/span&gt;&lt;/p&gt;
-&lt;p&gt;&lt;span&gt;But, also, it does increase contention on the stack, the following will work:&lt;/span&gt;&lt;/p&gt;
-&lt;pre&gt;&lt;code class=&quot;language-ocaml&quot;&gt;type 'a s = { stack : 'a list; size : int }
-type 'a t = 'a s Atomic.t
-&lt;/code&gt;&lt;/pre&gt;
-&lt;!-- let create () = Atomic.make { stack = []; size = 0 }
-let size t = (Atomic.get t).size
-
-let rec pop_opt_ t backoff =
-  match Atomic.get t with
-  | { stack = []; size = _ } -&gt; None
-  | { stack = hd :: tail; size } as before -&gt;
-      if Atomic.compare_and_set t before { stack = tail; size = size - 1 } then
-        Some hd
-      else pop_opt_ t (Backoff.once backoff)
-
-let pop_opt t = pop_opt_ t Backoff.default
-
-let rec push_ t value backoff =
-  let before = Atomic.get t in
-  let after = { stack = value :: before.stack; size = before.size + 1 } in
-  if Atomic.compare_and_set t before after then ()
-  else push_ t value (Backoff.once backoff)
-
-let push t value = push_ t value Backoff.default
-
-``` --&gt;
 &lt;/div&gt;
 &lt;/div&gt;
 &lt;h2 up-at-unpause=part4 pause&gt;&lt;span&gt;OxCaml &lt;/span&gt;&lt;span id=&quot;part4&quot;&gt;&lt;/span&gt;&lt;/h2&gt;
+&lt;/div&gt;
 &lt;/div&gt;
 &lt;/div&gt;
 &lt;/div&gt;

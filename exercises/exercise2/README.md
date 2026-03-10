@@ -10,7 +10,7 @@
  └── test/
      ├── dscheck_tests.ml     <-- Part 3: model checker -->
      ├── dune
-     ├── qcheck_lin_tests.ml  <-- Part 2: test generator -->   
+     ├── qcheck_lin_tests.ml  <-- Part 2: sequential consistency tester -->   
      └── unit_tests.ml        <-- Part 1: unit test - a solution of exercise 1 -->
 ```
 
@@ -53,26 +53,25 @@ Let's check that the data race is gone (or seems to be, at least). First, make s
 
 *Then run the test with TSan again. Does TSan report any data races?*
 
-```shell
-dune exec ./test/unit_tests.exe
-```
-
 That does not mean there are no more data races, but that no data race occurred during this particular run of the test. However, if the test was consistently triggering the bug before, it is a good sign that this data race is gone.
 
-For the rest of the exercise, we recommend switching back to the opam switch without TSan, as it is much faster to run the tests.
+For the rest of the exercise, we recommend switching back to the opam switch without TSan.
 ```shell
 opam switch ocaml
 eval $(opam env)
 ```
 
 ## 2. Finding a test that fails
-There is still a bug in this implementation. To find it, we could study the code carefully or write an exhaustive test suite, but a more practical approach is to use a test generator to produce a failing test case for us.
+There is still a bug in this implementation. To find it, we could study the code carefully or write an exhaustive test suite, but a more practical approach is to use `qcheck-lin` (it tests for sequential consistency by generating a random sequence of operations) to produce a failing test case for us.
 
-In our case, we are going to use a tool called `qcheck-lin`. This tool is based on QCheck, a property-based testing library in the style of QuickCheck from Haskell.
+`qcheck-lin` is based on QCheck, a property-based testing library in the style of QuickCheck from Haskell.
 
 ### About [`qcheck-lin`](https://github.com/ocaml-multicore/multicoretests)
 
-`qcheck-lin` provides an embedded combinator DSL to describe the signature of the library under test succinctly. From this description, it generates random sequences of commands, executes them in parallel, and checks whether the observed results can be explained by some sequential execution (this is called *linearizability*).
+`qcheck-lin` provides an embedded combinator DSL to describe the signature of the library under test succinctly. From this description, it generates random sequences of commands, executes them in parallel, and checks whether the observed results are *linearizable*, that is, whether they can be explained by some sequential ordering of the same operations. If so, each operation appears to have taken effect atomically at some point between its invocation and its response.
+
+
+`qcheck-lin` is not exhaustive, but it can find bugs that are hard to trigger with unit tests, and it is much faster than a model checker like `dscheck`.
 
 For example, with the Treiber stack, it could generate a test case like this one:
 - first, run sequentially: `[push 0]`
@@ -90,7 +89,7 @@ This would be described by a graph looking like:
   Push 1                      Pop
                               Size 
 ```
-Then `qcheck-lin` checks that some sequential execution of these commands can produce the observed results. In this case, there are 3 possible interleavings:
+Then `qcheck-lin` would check that some sequential execution of these commands can produce the observed results. In this case, there are 3 possible interleavings:
 - `push 0` -> `push 1` -> `pop` -> `size` that would produce `Pop: 1` and `Size: 1`
 - `push 0` -> `pop` -> `push 1` -> `size` that would produce `Pop: 0` and `Size: 1`
 - `push 0` -> `pop` -> `size` -> `push 1` that would produce `Pop: 0` and `Size: 0`
@@ -110,7 +109,7 @@ If the tests take too long to run (more than one minute), you can reduce the num
 ### Exercise: Translate the test case to a unit test
 *Translate the failing test case to a unit test and run it with TSan. Is it a data race?*
 
-In the case of the Treiber stack, having a failing test may be enough to find the bug in the implementation. In other cases, you might want a trace of where the bug happens. For that, we can use a model checker called `dscheck`: this is part 3 of this exercise.
+In the case of the Treiber stack, having a failing test may be enough to find the bug in the implementation. In other cases, you might want a trace of where the bug happens. For that, we can use a model checker called `dscheck`.
 
 ## 3. `dscheck` test to find a trace of the bug
 
@@ -210,3 +209,6 @@ fetch_and_add a
 ```
 
 Here, `b` is the stack (used with `compare_and_swap`) and `a` is the size (used with `fetch_and_add` and `get`).
+
+### Exercise: Find the bug with `dscheck`
+Try to find the bug in the implementation by reading the trace of the failing test case. If you have some time left, you can try to implement a fix for it and check that the test is now passing.

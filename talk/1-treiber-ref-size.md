@@ -8,15 +8,15 @@
 > let create () = { stack = Atomic.make []}
 > 
 >
-> let rec push_ t value backoff =
+> let rec push_ t v backoff =
 > let before = Atomic.get t.stack in
->  let after = value :: before in
+>  let after = v :: before in
 >  if Atomic.compare_and_set t.stack before after then 
 >    ()
 >  else 
->    push_ t value (Backoff.once backoff)
+>    push_ t v (Backoff.once backoff)
 >
-> let push t value = push_ t value Backoff.default
+> let push t v = push_ t v Backoff.default
 > 
 > let rec pop_opt_ t backoff =
 >  match Atomic.get t.stack with
@@ -36,15 +36,15 @@
 > let create () = { stack = Atomic.make []; size = ref 0 }
 >
 >
-> let rec push_ t value backoff =
+> let rec push_ t v backoff =
 > let before = Atomic.get t.stack in
->  let after = value :: before in
+>  let after = v :: before in
 >  if Atomic.compare_and_set t.stack before after then 
 >    ()
 >  else 
->    push_ t value (Backoff.once backoff)
+>    push_ t v (Backoff.once backoff)
 >
-> let push t value = push_ t value Backoff.default
+> let push t v = push_ t v Backoff.default
 > 
 > let rec pop_opt_ t backoff =
 >  match Atomic.get t.stack with
@@ -64,15 +64,15 @@
 > let create () = { stack = Atomic.make []; size = ref 0 }
 > let size t = !(t.size)
 >
-> let rec push_ t value backoff =
+> let rec push_ t v backoff =
 > let before = Atomic.get t.stack in
->  let after = value :: before in
+>  let after = v :: before in
 >  if Atomic.compare_and_set t.stack before after then 
 >    ()
 >  else 
->    push_ t value (Backoff.once backoff)
+>    push_ t v (Backoff.once backoff)
 >
-> let push t value = push_ t value Backoff.default
+> let push t v = push_ t v Backoff.default
 > 
 > let rec pop_opt_ t backoff =
 >  match Atomic.get t.stack with
@@ -92,15 +92,15 @@
 > let create () = { stack = Atomic.make []; size = ref 0 }
 > let size t = !(t.size)
 >
-> let rec push_ t value backoff =
+> let rec push_ t v backoff =
 > let before = Atomic.get t.stack in
->  let after = value :: before in
+>  let after = v :: before in
 >  if Atomic.compare_and_set t.stack before after then 
 >    incr t.size
 >  else 
->    push_ t value (Backoff.once backoff)
+>    push_ t v (Backoff.once backoff)
 >
-> let push t value = push_ t value Backoff.default
+> let push t v = push_ t v Backoff.default
 > 
 > let rec pop_opt_ t backoff =
 >  match Atomic.get t.stack with
@@ -120,15 +120,15 @@
 > let create () = { stack = Atomic.make []; size = ref 0 }
 > let size t = !(t.size)
 >
-> let rec push_ t value backoff =
+> let rec push_ t v backoff =
 > let before = Atomic.get t.stack in
->  let after = value :: before in
+>  let after = v :: before in
 >  if Atomic.compare_and_set t.stack before after then 
 >    incr t.size
 >  else 
->    push_ t value (Backoff.once backoff)
+>    push_ t v (Backoff.once backoff)
 >
-> let push t value = push_ t value Backoff.default
+> let push t v = push_ t v Backoff.default
 > 
 > let rec pop_opt_ t backoff =
 >  match Atomic.get t.stack with

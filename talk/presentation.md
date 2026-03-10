@@ -20,7 +20,7 @@ https://github.com/lyrm/bobkonf2026#setup
 You also need to clone the following repository, which contains the exercises we will be working on during the tutorial: 
 
 ```shell
-git clone https://github.com/lyrm/bobkonf2026.git
+git clone git@github.com:lyrm/bobkonf2026.git
 ```
 
 If you cloned it sooner this week, make sure to pull the latest changes!
@@ -29,7 +29,7 @@ If you cloned it sooner this week, make sure to pull the latest changes!
 ## OCaml
 - Functional-first but multi-paradigm (supports imperative and object-oriented styles)
 - Static type system with Hindley–Milner type inference
-- Advanced features — powerful module system, GADTs, polymorphic variants {pause}
+- Advanced features: powerful module system, GADTs, polymorphic variants {pause}
 - Since December 2022 (OCaml 5): Multicore support and effect handlers
 
 {pause}
@@ -98,6 +98,33 @@ We add a `size` function to a lock-free Treiber stack and deliberately fall into
 > > {include src=2-data-races.md}
 
 {pause up-at-unpause=part2}
+
+{pause up}
+{include src=2-concl-ex1.md}
+
+{pause up}
+### Second pitfall: atomic size field
+
+{.columns-2b #phases}
+---
+
+{include src=2-atomic-implem.md}
+
+
+> > 
+> {.block .box reveal #ex2}
+> > 📝 Exercise 2: race conditions on atomic operations
+> > - A new implementation with an atomic size field
+> > - Check the previous bug is gone with TSan
+> > - Find a test that fails with `qcheck-lin`
+> > - Find a trace of the bug with a model checker (`dscheck`) 
+>
+
+---
+
+{pause up}
+{include src=2-concl-ex2.md}
+
 
 {pause up-at-unpause=part3}
 ## Conclusion on multicore-safety in OCaml {#part3}

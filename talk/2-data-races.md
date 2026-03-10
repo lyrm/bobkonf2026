@@ -50,17 +50,17 @@
 > > > {#data-race} 
 > > > > [**An unpredictable bug**, caused by compiler and architecture optimization!]{style="color: crimson"}
 > > > > 
-> > > > But, in OCaml, a data-race can't cause a crash. 
+> > > > But, in OCaml, a data race can't cause a crash. 
 > > 
 > > > 
 > > > {.block .inner-box pause}
 > > > > **Non-atomic mutable values in OCaml:**
 > > > > - reference cells (`ref`)
 > > > > - mutable record fields (`{mutable field : ...}`)
-> > > > - arrays (`Array` and `Bigarray`) {reveal=data-race}
+> > > > - arrays (`Array`)
+{reveal=data-race}
 
-{pause}
-
+{pause down}
 {.example-columns}
 ---
 > #### Example

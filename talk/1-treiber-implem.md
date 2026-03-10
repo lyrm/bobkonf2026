@@ -10,13 +10,13 @@ let create () = { stack = Atomic.make [] }
 ```
 {pause}
 ```ocaml
-let rec push_ t value backoff =
+let rec push_ t v backoff =
   let before = Atomic.get t.stack in
-  let after = value :: before in
+  let after = v :: before in
   if Atomic.compare_and_set t.stack before after then ()
-  else push_ t value (Backoff.once backoff)
+  else push_ t v (Backoff.once backoff)
 
-let push t value = push_ t value Backoff.default
+let push t v = push_ t v Backoff.default
 ```
 {pause}
 ```ocaml

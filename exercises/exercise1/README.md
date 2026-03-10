@@ -47,7 +47,7 @@ The objective of this exercise is to understand how to find what is wrong with t
 
 The first step is being able to identify that the implementation is wrong. For that, we wrote a single unit test in `exercises/exercise1/test/unit_tests.ml`. In this exercise, we will modify it to consistently catch the bug.
 
-### Step 0: Running the test
+## Step 0: Running the test
 First, have a look at the test. You can run it using the following command:
 ```shell
 dune exec ./test/unit_tests.exe
@@ -87,15 +87,13 @@ Modify the test `test_push_pop` to also check that the size of the stack is corr
 
 To increase the likelihood of triggering the bug, we need to repeat the test multiple times. For that, you can use the pre-defined `repeat : int -> (unit -> bool) -> bool` function in the `Utils` module to run the test multiple times.
 
-### Step 2.2
-
 Try to find a number of repetitions that makes the test fail consistently.
 
 It is quite long, right? This is because the test is badly written: we spawn two domains at every repetition, but spawning a domain in OCaml is quite expensive! The next step should fix this issue.
 
-### Step 2.3
+### Step 2.2
 
-Improve the test by adding more push and pop operations in each domain, instead of just one. A few of each should be enough. You may also have to adapt the properties that are checked at the end of the test.
+Improve the test by adding several `push` and `pop` operations in each domain, instead of just one. A few of each should be enough. You may also have to adapt the properties that are checked at the end of the test.
 
 At this point, you should be able to see the test failing consistently, without the test taking too long to run.
 
@@ -113,7 +111,7 @@ A nondeterministic bug in a concurrent program is often a sign of a race conditi
 - data races
 - race conditions between atomic operations (covered in exercises 2)
 
-> **💡 Note**: If you have reached this point before my explanation about data races and race conditions, and you don't already know about them, no worries, you can still continue, all you really need to know is written below.
+> **💡 Note**: If you have reached this point before the explanation about data races and race conditions, and you don't already know about them, no worries, you can still continue, all you really need to know is written below.
 
 
 ### About data races in OCaml 5's memory model
@@ -126,7 +124,7 @@ A *data race* occurs when:
 > **💡 Note**: Non-atomic mutable values in OCaml include:
 > - reference cells (`ref`),
 > - mutable record fields (`{...; mutable field : ...}`),
-> - arrays (`Array` and `Bigarray`).
+> - arrays (`Array`).
 
 **What happens when there is a data race?** Unlike C/C++ where data races are undefined behavior, OCaml's memory model guarantees that your program won't crash or corrupt memory. However, you may observe *non-sequentially-consistent* results: the outcome may not correspond to any interleaving of the operations from each domain.
 
@@ -150,4 +148,6 @@ eval $(opam env)
 Run the test again. If the test is failing, you should see a (long) message from TSan giving the trace of the data races encountered during the execution.
 
 ### Step 3.2
-You can now try to follow a trace to find the bug. Can you think of a fix for it? If you have some time left, you can try to implement it!
+You can now try to follow a trace to find the bug.
+
+Can you think of a fix for it? If you have some time left, you can try to implement it!
