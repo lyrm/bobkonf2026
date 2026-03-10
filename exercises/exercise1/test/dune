@@ -1,4 +1,4 @@
 (test
  (package exercise1)
  (name unit_tests)
- (libraries treiber_stack1 alcotest utils))
+ (libraries treiber_stack1 utils))

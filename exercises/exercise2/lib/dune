@@ -1,4 +1,0 @@
-(library
- (package exercise2)
- (name treiber_stack2)
- (libraries backoff dscheck))

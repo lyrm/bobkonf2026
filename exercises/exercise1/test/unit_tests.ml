@@ -10,9 +10,6 @@ let test_push_pop (() : unit) : bool =
 
   (* Work to run on the first domain (i.e. thread). *)
   let prod_work () =
-    (* The barrier prevents each domain from starting its work before
-       the other domain is ready, increasing the likelihood of them
-       running concurrently. *)
     Barrier.await barrier;
     Stack.push stack 42
   in
@@ -39,15 +36,7 @@ let test_push_pop (() : unit) : bool =
   | Some 42, [] | None, [ 42 ] -> true
   | _ -> false
 
-(* The following is the infrastructure to launch the tests using Alcotest,
-   which gives us a nice output. *)
 let () =
-  let open Alcotest in
-  run "Exercise1"
-    [
-      ( "parallel_tests",
-        [
-          test_case "push_pop_once" `Quick (fun () ->
-              check bool "true" true (test_push_pop ()));
-        ] );
-    ]
+  let result = test_push_pop () in
+  Printf.printf "test_push_pop: %s\n" (if result then "PASSED" else "FAILED");
+  if not result then exit 1

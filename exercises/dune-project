@@ -26,19 +26,4 @@
  (description "Treiber stack with a mutable size")
  (depends
   (ocaml
-   (>= 5.2.0))
-  (alcotest :with-test)))
-
-(package
- (name exercise2)
- (synopsis "Exercise 2")
- (description "Treiber stack with a atomic size")
- (depends
-  (ocaml
-   (>= 5.2.0))
-  (alcotest :with-test)
-  (dscheck :with-test)
-  (qcheck-stm :with-test)
-  (qcheck-lin :with-test))
- (tags
-  ("bobkonf2026" "teaching")))
+   (>= 5.2.0))))
