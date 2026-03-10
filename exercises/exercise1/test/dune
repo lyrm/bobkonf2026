@@ -1,4 +1,4 @@
 (test
  (package exercise1)
  (name unit_tests)
- (libraries treiber_stack1 utils))
+ (libraries treiber_stack1 utils await basement parallel parallel.scheduler))

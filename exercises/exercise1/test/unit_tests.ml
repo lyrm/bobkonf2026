@@ -4,6 +4,11 @@ module Stack = Treiber_stack1
 
 let drain_all stack = Utils.drain_all Stack.pop_opt stack
 
+let ( let* ) spawn_result f =
+  match spawn_result with
+  | Multicore.Spawned -> f ()
+  | Failed ((), _exn, _backtrace) -> assert false
+
 let test_push_pop (() : unit) : bool =
   let stack = Stack.create () in
   let barrier = Barrier.create 2 in
@@ -15,24 +20,20 @@ let test_push_pop (() : unit) : bool =
   in
 
   (* Work to run on the second domain. *)
+  let popped = ref None in
   let cons_work () =
     Barrier.await barrier;
-    Stack.pop_opt stack
+    popped := Stack.pop_opt stack
   in
 
   (* Spawning the domains *)
-  let producer = Domain.spawn prod_work in
-  let consumer = Domain.spawn cons_work in
-
-  (* [Domain.join] is a blocking function that waits for the domain to finish 
-  its work *)
-  let () = Domain.join producer in
-  let popped = Domain.join consumer in
+  let* () = Multicore.spawn (fun () -> prod_work ()) () in
+  let* () = Multicore.spawn (fun () -> cons_work ()) () in
 
   (* Properties that should hold after both domains finish *)
   let remaining = drain_all stack in
 
-  match (popped, remaining) with
+  match (!popped, remaining) with
   | Some 42, [] | None, [ 42 ] -> true
   | _ -> false
 

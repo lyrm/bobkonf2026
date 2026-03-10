@@ -1,10 +1,10 @@
 (** Treiber's Lock Free stack *)
 
-type 'a t = { stack : 'a list Atomic.t; size : int ref }
+type ('a : value mod contended portable) t : value mod portable contended = { stack : 'a list Atomic.t; size : int ref }
 
 let create () = { stack = Atomic.make []; size = ref 0 }
 
-let rec pop_opt_ t backoff =
+let rec (pop_opt_ @ portable) t backoff =
   match Atomic.get t.stack with
   | [] -> None
   | hd :: tail as before ->
@@ -15,7 +15,7 @@ let rec pop_opt_ t backoff =
 
 let pop_opt t = pop_opt_ t Backoff.default
 
-let rec push_ t value backoff =
+let rec (push_ @ portable) t value backoff =
   let before = Atomic.get t.stack in
   let after = value :: before in
   if Atomic.compare_and_set t.stack before after then incr t.size
