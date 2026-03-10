@@ -11,14 +11,6 @@ type 'a t
 val create : unit -> 'a t
 (** [create ()] creates a new empty Treiber stack. *)
 
-val is_empty : 'a t -> bool
-(** [is_empty stack] returns [true] if the [stack] is empty, otherwise [false].
-*)
-
-val peek_opt : 'a t -> 'a option
-(** [peek_opt stack] returns [Some] of the top element of the [stack] without
-    removing it, or [None] if the [stack] is empty. *)
-
 val pop_opt : 'a t -> 'a option
 (** [pop_opt stack] removes and returns [Some] of the top element of the
     [stack], or [None] if the [stack] is empty. *)
@@ -41,8 +33,6 @@ val size : 'a t -> int
       - : unit = ()
       # push t 1
       - : unit = ()
-      # peek_opt t
-      - : int option = Some 1
       # pop_opt t
       - : int option = Some 1
       # pop_opt t

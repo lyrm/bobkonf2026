@@ -16,8 +16,6 @@ module StackSig = struct
     [
       val_ "Stack.push" Stack.push (t @-> a @-> returning unit);
       val_ "Stack.pop_opt" Stack.pop_opt (t @-> returning (option a));
-      val_ "Stack.is_empty" Stack.is_empty (t @-> returning bool);
-      val_ "Stack.peek_opt" Stack.peek_opt (t @-> returning (option a));
     ]
 end
 

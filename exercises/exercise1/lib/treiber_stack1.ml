@@ -3,8 +3,6 @@
 type 'a t = { stack : 'a list Atomic.t; size : int ref }
 
 let create () = { stack = Atomic.make []; size = ref 0 }
-let is_empty t = Atomic.get t.stack == []
-let peek_opt t = match Atomic.get t.stack with [] -> None | hd :: _ -> Some hd
 
 let rec pop_opt_ t backoff =
   match Atomic.get t.stack with

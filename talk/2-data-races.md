@@ -44,8 +44,9 @@
 > > > A **data race** occurs when:
 > > >
 > > > 1. Two or more domains run in parallel,
-> > > 2. at least two access the same *non-atomic* mutable value,
-> > > 3. and at least one of them writes to it.
+> > > 2. at least two access the same mutable value,
+> > > 3. and at least one of them writes to it
+> > > 4. without a synchronization mechanism (like locks or atomic operations).
 > > >
 > > > {#data-race} 
 > > > > [**An unpredictable bug**, caused by compiler and architecture optimization!]{style="color: crimson"}
