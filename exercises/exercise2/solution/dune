@@ -1,0 +1,17 @@
+(test
+ (package exercise2)
+ (name unit_tests_sol)
+ (modules unit_tests_sol)
+ (libraries treiber_stack2 alcotest utils))
+
+(test
+ (package exercise2)
+ (name qcheck_lin_tests_sol)
+ (modules qcheck_lin_tests_sol)
+ (libraries treiber_stack2 qcheck-lin.lin qcheck-lin.domain))
+
+(test
+ (package exercise2)
+ (name dscheck_tests_sol)
+ (modules dscheck_tests_sol)
+ (libraries alcotest dscheck utils treiber_stack2))

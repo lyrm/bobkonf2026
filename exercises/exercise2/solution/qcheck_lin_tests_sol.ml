@@ -16,7 +16,7 @@ module StackSig = struct
     [
       val_ "Stack.push" Stack.push (t @-> a @-> returning unit);
       val_ "Stack.pop_opt" Stack.pop_opt (t @-> returning (option a));
-      (* 2.1 TODO Add the size function to this API *)
+      val_ "Stack.size" Stack.size (t @-> returning int);
     ]
 end
 

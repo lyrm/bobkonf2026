@@ -34,29 +34,26 @@ let test_push_pop () =
                 | _ -> false)))
   with Assert_failure _ -> Alcotest.fail "dscheck found an assertion violation"
 
-(* 3.1 TODO Translate the failing test you found with qcheck-lin here *)
-(*
 let test_my_bug () =
   try
     Dscheck.trace (fun () ->
         let stack = Stack.create () in
 
-        (* Any sequential operation should be added here. *)
-
         Dscheck.spawn (fun () ->
             (* Operations performed by the first domain *)
-          );
+            Stack.push stack 1);
 
+        let size = ref 0 in
         Dscheck.spawn (fun () ->
             (* Operation peformed by the secoond domain *)
-          );
+            Stack.pop_opt stack |> ignore;
+            size := Stack.size stack);
 
         Dscheck.final (fun () ->
             Dscheck.check (fun () ->
                 (* The property you want to check for *)
-                true)))
+                !size = 0)))
   with Assert_failure _ -> Alcotest.fail "dscheck found an assertion violation"
-*)
 
 let () =
   let open Alcotest in
@@ -65,8 +62,7 @@ let () =
       ( "basic",
         (* Additional test should be added in the following list *)
         [
-          test_case "push_pop" `Slow test_push_pop
-          (* 3.1 TODO uncomment the following line *)
-          (* test_case "exercise 2 bug" `Slow test_my_bug; *);
+          test_case "push_pop" `Slow test_push_pop;
+          test_case "exercise 2 bug" `Slow test_my_bug;
         ] );
     ]

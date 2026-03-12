@@ -1,0 +1,17 @@
+Found assertion violation at run 3:
+
+sequence 3
+----------------------------------------
+P0			P1			
+----------------------------------------
+start 
+get b
+compare_and_swap b
+			start 
+			get b
+			compare_and_swap b
+			fetch_and_add a
+			get a
+fetch_and_add a
+----------------------------------------
+
