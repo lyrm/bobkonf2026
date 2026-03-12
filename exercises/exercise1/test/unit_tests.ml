@@ -4,11 +4,8 @@ module Stack = Treiber_stack1
 
 (** [drain_all stack] returns all the remaining elements of the stack in the
     same order (head of the list = top of the stack) *)
-(* let drain_all stack =
-  let rec aux acc =
-    match Stack.pop_opt stack with None -> acc | Some elt -> aux (elt :: acc)
-  in
-  aux [] *)
+(* let drain_all stack = Utils.drain_all Stack.pop_opt stack
+ *)
 
 let test_push_pop (() : unit) : bool =
   let stack = Stack.create () in

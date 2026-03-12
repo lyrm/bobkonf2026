@@ -109,7 +109,7 @@ A nondeterministic bug in a concurrent program is often a sign of a race conditi
 
 > **💡 Note**: If you have reached this point before the explanation about data races and race conditions, and you don't already know about them, no worries, you can still continue, all you really need to know is written at [at the end of this file](#about-data-races-in-ocaml-5s-memory-model).
 
-### Exercise: Catching the data races
+### Catching the data races
 To catch a data race, we use the same tool that other languages use: ThreadSanitizer ([TSan](https://ocaml.org/manual/5.3/tsan.html)). TSan instruments the compiler to detect data races during execution.
 
 > **💡 IMPORTANT WARNING**: 
@@ -130,12 +130,18 @@ opam switch 5.4.0+tsan
 eval $(opam env)
 ```
 
-### Step 3.1
+### (Required TSan) Step 3.1
 *Run the test with the compiler with TSan enabled.*
 
 If the test is failing, you should see a (long) message from TSan giving the trace of the data races encountered during the execution.
 
 ### Step 3.2
+
+> **💡 Note**: 
+> 
+> If you were not able to get a TSan trace, you can find one in [`solution/tsan_trace`](solution/tsan_trace).
+> 
+
 *Try to follow a trace to find the bug.*
 
 *Can you think of a fix for it?*
