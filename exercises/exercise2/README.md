@@ -41,7 +41,7 @@ That does not mean there are no more data races, but that no data race occurred 
 
 For the rest of the exercise, we recommend switching back to the opam switch without TSan.
 ```shell
-opam switch 5.4.0
+opam switch ocaml
 eval $(opam env)
 ```
 
@@ -60,7 +60,7 @@ dune exec ./test/qcheck_lin_tests.exe
 
 If the tests take too long to run (more than a minute), you can reduce the number of tests by changing the `~count` parameter in the `QCheck_runner.run_tests` function.
 
-`qcheck-lin` is doing its best to shrink the test to a minimal failing test case, but because it is a non-deterministic bug it may fail to reduce it enough to be easy to understand. You can rerun it a few time until yoy get an example with *at most 6 or 7* operations on it.
+`qcheck-lin` is doing its best to shrink the test to a minimal failing test case, but because it is a non-deterministic bug it may fail to reduce it enough to be easy to understand. You can rerun it a few times until you get an example with *at most 6 or 7* operations on it.
 
 
 This failing test will be described by a graph looking like:
@@ -114,9 +114,9 @@ See [About `dscheck`](#about-dscheck) for more.
 
 
 ### Step 3.1: Translate the test case to a `dscheck` test
-*Translate the failing case you found with `qcheck-lin` in `test/dscheck_test.ml.`*
+*Translate the failing case you found with `qcheck-lin` in `test/dscheck_tests.ml`.*
 
-You can use the test already written in `test/dscheck_test.ml` as a template. You also need to know what you are checking for. In the example [above](#step-22), you would check that the `pop` operations do not return `None` (i.e., that the stack is not empty).
+You can use the test already written in `test/dscheck_tests.ml` as a template. You also need to know what you are checking for. In the example [above](#step-22), you would check that the `pop` operations do not return `None` (i.e., that the stack is not empty).
 
 To run the `dscheck` tests:
 

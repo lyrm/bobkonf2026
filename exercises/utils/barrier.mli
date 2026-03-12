@@ -55,5 +55,5 @@ val create : int -> t
 
 val await : t -> unit
 (** A domain calling [await barrier] will only be able to progress past this
-    function once the number of domains waiting at the barrier is egal to its
+    function once the number of domains waiting at the barrier is equal to its
     capacity . *)

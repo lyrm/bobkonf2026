@@ -49,7 +49,7 @@ val size : 'a t -> int
     unnecessary.
 
     {@ocaml non-deterministic=command[
-      # open Treiber_stack1
+      # open Treiber_stack2
       # let t : int t = create ()
       val t : int t = <abstr>
       # let pusher () =

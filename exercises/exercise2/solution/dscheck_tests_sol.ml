@@ -45,7 +45,7 @@ let test_my_bug () =
 
         let size = ref 0 in
         Dscheck.spawn (fun () ->
-            (* Operation peformed by the secoond domain *)
+            (* Operation performed by the second domain *)
             Stack.pop_opt stack |> ignore;
             size := Stack.size stack);
 

@@ -48,7 +48,7 @@ let test_my_bug () =
           );
 
         Dscheck.spawn (fun () ->
-            (* Operation peformed by the secoond domain *)
+            (* Operation performed by the second domain *)
           );
 
         Dscheck.final (fun () ->

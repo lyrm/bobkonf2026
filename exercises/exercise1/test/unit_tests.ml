@@ -39,7 +39,7 @@ let test_push_pop (() : unit) : bool =
   let () = Domain.join consumer in
 
   (* Properties that should hold after both domains finish *)
-  (* 1. TODO : replace the following line to check that the value returns by 
+  (* 1. TODO : replace the following line to check that the value returned by 
   `Stack.size` is correct.
 
   Tip: You can use the function `drain_all` that is commented at the start of 
@@ -56,7 +56,7 @@ let () =
         [
           test_case "push_pop_once" `Quick (fun () ->
               check bool "true" true
-                ((* 2.2 TODO Repeat the test using `Utils.repeat` here. *)
+                ((* 2.1 TODO Repeat the test using `Utils.repeat` here. *)
                  test_push_pop ()));
         ] );
     ]

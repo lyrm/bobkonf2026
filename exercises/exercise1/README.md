@@ -4,12 +4,12 @@
  exercise1/
  ├── README.md               <-- you're here! -->
  ├── lib/
- │   ├── dune  
+ │   ├── dune
  │   ├── treiber_stack1.ml   <-- stack implementation -->
  │   └── treiber_stack1.mli  <-- stack signature -->
- └── solution/
-     ├── dune
-     └── unit_tests_sol.ml   <-- solution -->
+ ├── solution/
+ │   ├── dune
+ │   └── unit_tests_sol.ml   <-- solution -->
  └── test/
      ├── dune
      └── unit_tests.ml       <-- a unit test -->
@@ -52,13 +52,13 @@ The objective of this exercise is to understand how to find what is wrong with t
 
 > **💡 Note**: For the given command line to work, you need to be in `exercises/exercise1` directory.
 
-In `test/unit_tests.ml` you will find a unfinished unit test. The purpose of this exercise is to complete the test and make it catch consistently the bug. 
+In `test/unit_tests.ml` you will find an unfinished unit test. The purpose of this exercise is to complete the test and make it catch consistently the bug. 
 
 To run the test:
 ```shell
 dune exec ./test/unit_tests.exe
 ```
-Currently the test always passes as it returns `true` (line 48). 
+Currently the test always passes as it returns `true` (line 47).
 
 *Modify it to check that the value returned by the newly added `Stack.size` function is valid.*  
 
@@ -126,7 +126,7 @@ To catch a data race, we use the same tool that other languages use: ThreadSanit
 To run the test with TSan, you need to use the second switch where TSan is enabled. You can switch to it with the following command:
 
 ```shell
-opam switch 5.4.0+tsan
+opam switch ocaml+tsan
 eval $(opam env)
 ```
 
