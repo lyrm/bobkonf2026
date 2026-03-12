@@ -31,10 +31,10 @@ From `exercises/exercise1`, you can use the following commands:
 ## Context
 
 ### Base implementation
-You can find a base implementation of Treiber's stack in `exercises/base_implementation/treiber_stack.ml`. It is a lock-free stack implementation that does not maintain the size of the stack.
+You can find a base implementation of Treiber's stack in [`exercises/base_implementation/treiber_stack.ml`](../base_implementation/treiber_stack.ml). It is a lock-free stack implementation that does not maintain the size of the stack.
 
 ### Adding size tracking
-In this exercise, we have modified the base implementation to maintain the size of the stack. The modified implementation is in `exercises/exercise1/lib/treiber_stack1.ml`.
+In this exercise, we have modified the base implementation to maintain the size of the stack. The modified implementation is in [`exercises/exercise1/lib/treiber_stack1.ml`](../exercise1/lib/treiber_stack1.ml).
 
 You can see how this implementation differs from the base one with a `diff` command:
 
@@ -107,7 +107,7 @@ A nondeterministic bug in a concurrent program is often a sign of a race conditi
 - data races
 - race conditions between atomic operations (covered in exercise 2)
 
-> **💡 Note**: If you have reached this point before the explanation about data races and race conditions, and you don't already know about them, no worries, you can still continue, all you really need to know is written at [at the end of this file](README.md#data-races).
+> **💡 Note**: If you have reached this point before the explanation about data races and race conditions, and you don't already know about them, no worries, you can still continue, all you really need to know is written at [at the end of this file](#about-data-races-in-ocaml-5s-memory-model).
 
 ### Exercise: Catching the data races
 To catch a data race, we use the same tool that other languages use: ThreadSanitizer ([TSan](https://ocaml.org/manual/5.3/tsan.html)). TSan instruments the compiler to detect data races during execution.
@@ -120,7 +120,7 @@ To catch a data race, we use the same tool that other languages use: ThreadSanit
 > sudo sysctl -w vm.mmap_rnd_bits=28
 > ```
 > 
-> Otherwise, you will find one trace that TSan can return on `solution/tsan_trace`. In this case, you can move to [Step 3.2](#follow-the-trace)
+> Otherwise, you will find one trace that TSan can return on [`solution/tsan_trace`](solution/tsan_trace). In this case, you can move to [Step 3.2](#step-32).
 > 
 
 To run the test with TSan, you need to use the second switch where TSan is enabled. You can switch to it with the following command:
@@ -135,7 +135,7 @@ eval $(opam env)
 
 If the test is failing, you should see a (long) message from TSan giving the trace of the data races encountered during the execution.
 
-### Step 3.2 {#follow-the-trace}
+### Step 3.2
 *Try to follow a trace to find the bug.*
 
 *Can you think of a fix for it?*
@@ -144,7 +144,7 @@ If you have some time left, you can try to implement it!
 
 
 ## (Optional) Additional information
-### About data races in OCaml 5's memory model {#data-races}
+### About data races in OCaml 5's memory model
 A *data race* occurs when:
 
 1. Two or more domains run in parallel,
@@ -163,3 +163,5 @@ In a data-race-free program, OCaml guarantees *sequential consistency*: every ex
 For more on OCaml's memory model:
 - https://ocaml.org/manual/5.4/parallelism.html
 - https://ocaml.org/manual/5.4/memorymodel.html
+
+Go back to [Identifying the bug](#3-identifying-the-bug) to continue the tutorial.
