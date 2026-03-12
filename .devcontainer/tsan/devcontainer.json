@@ -1,0 +1,19 @@
+{
+  "name": "OCaml+TSan",
+  "image": "cuihtlauac/ocaml-devcontainer-tsan:latest",
+  "customizations": {
+    "vscode": {
+      "extensions": [
+        "ocamllabs.ocaml-platform"
+      ],
+      "settings": {
+        "ocaml.sandbox": {
+          "kind": "opam",
+          "switch": "ocaml+tsan"
+        }
+      }
+    }
+  },
+  "workspaceFolder": "/workspaces/${localWorkspaceFolderBasename}/exercises",
+  "postStartCommand": "opam switch set ocaml+tsan && eval $(opam env)"
+}
