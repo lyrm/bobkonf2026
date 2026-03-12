@@ -15,5 +15,6 @@
     }
   },
   "workspaceFolder": "/workspaces/${localWorkspaceFolderBasename}/exercises",
-  "postStartCommand": "opam switch set ocaml && eval $(opam env)"
+  "postStartCommand": "opam switch set ocaml && eval $(opam env)",
+  "postCreateCommand": "code-server --install-extension /workspaces/${localWorkspaceFolderBasename}/.devcontainer/ocaml-platform.vsix || true"
 }
