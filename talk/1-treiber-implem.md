@@ -1,6 +1,4 @@
- ### Implementation
-
-
+{pause}
 ```ocaml
 type 'a t = { stack : 'a list Atomic.t }
 ```

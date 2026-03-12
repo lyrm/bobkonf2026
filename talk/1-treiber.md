@@ -23,22 +23,28 @@
 ---
 
 {carousel #carousel-treiber }
-> > ### Interface
+> > ### Lockfree stack interface  
 > > {include src=1-treiber-interface.md}
 >
 > > ### Objective: Add a `size` function
 > > {include src=1-treiber-objective.md}
 
-
-{include src=1-treiber-implem.md}
+> ### Lockfree stack implementation
+> {include src=1-treiber-implem.md}
 
 ---
 
 {change-page=carousel-treiber}
 
-{reveal="obj" unreveal="ex1 ex2"}
+{reveal="compl"}
+
+{reveal="obj"} 
 
 {pause up}
+<div style="background: #e8f4fd; border: 1px solid #4a90d9; border-radius: 5px; padding: 0.4em 1em; font-size: 1em; text-align: center; margin-top: 1em;">
+📋 <strong>Setup</strong>: <code>git clone git@github.com:lyrm/bobkonf2026.git</code>. Full setup instructions in the README. </a>
+</div>
+
 ### First pitfall: mutable size field
 <style>
 .columns-2b {

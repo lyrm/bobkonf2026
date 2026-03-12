@@ -1,6 +1,7 @@
 ## Data races in OCaml 5's memory model
 
-{pause unreveal=data-race}
+{pause}
+
 
 <style>
 .box-columns {
@@ -39,6 +40,7 @@
 }
 </style>
 
+
 {.block .box}
 > {.box-columns}
 > > > A **data race** occurs when:
@@ -59,6 +61,7 @@
 > > > > - reference cells (`ref`)
 > > > > - mutable record fields (`{mutable field : ...}`)
 > > > > - arrays (`Array`)
+
 {reveal=data-race}
 
 {pause down}

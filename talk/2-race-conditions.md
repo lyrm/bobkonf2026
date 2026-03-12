@@ -1,6 +1,6 @@
 ## Race conditions
 
-{pause unreveal=race-cond}
+{pause}
 
 {.block .box}
 > A **race condition** occurs when the behavior of a program depends on the relative timing of events, such as the interleaving of operations from different threads.

@@ -46,7 +46,7 @@
 {pause up}
 ### A better implementation ?
 
-See this [paper](https://arxiv.org/pdf/2209.07100): it is actually not easy to add an efficient size function to a lockfree algorithm. 
+[*Concurrent Size*, Sela and Petrank 2022](https://arxiv.org/pdf/2209.07100): it is actually not easy to add an efficient size function to a lockfree algorithm. 
 
 {pause}
 
