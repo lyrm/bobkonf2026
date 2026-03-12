@@ -3,8 +3,7 @@
 
 ## Setup
 
-There are several options to set up your environment to run the exercises in this repository, depending on your preferences and existing setup. All options will provide an environment with OCaml 5.4.0 and the necessary dependencies to run the exercises, including the TSan-enabled OCaml compiler for the relevant exercises. 
-
+There are several options to set up your environment to run the exercises in this repository, depending on your preferences and existing setup. All options will provide an environment with OCaml 5.4.0 and the necessary dependencies to run the exercises. Unfortunately, we are not able to make one of the tool (TSan) works in Codespaces but a work around is proposed in the exercise. Using Codespaces is still the fastest option. 
 
 --- 
 
@@ -18,10 +17,11 @@ If you already have your own OCaml environment installed, clone this repository 
 
 ---
 
-### (A few minutes) Local devcontainer setup
+### (Wifi dependent) Local devcontainer setup
 You need to clone this repository first. 
 
 #### VS Code
+For this option, you need `docker` and the `Dev Containers`extension for VS Code. 
 
 Launch the devcontainer in [VS Code](https://code.visualstudio.com/docs/devcontainers/containers) : 
 - `CTRL+SHIFT+P` 

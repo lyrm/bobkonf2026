@@ -14,7 +14,7 @@ dimension: 16:9
 
 The set up instructions are here: 
 ```shell
-https://github.com/lyrm/bobkonf2026#setup
+https://github.com/lyrm/bobkonf2026
 ```
 
 You also need to clone the following repository, which contains the exercises we will be working on during the tutorial: 
@@ -133,3 +133,4 @@ We add a `size` function to a lock-free Treiber stack and deliberately fall into
 {pause up-at-unpause=part4}
 ## OxCaml {#part4}
 
+{include src=4-oxcaml.md}

@@ -7,6 +7,9 @@
  │   ├── dune  
  │   ├── treiber_stack1.ml   <-- stack implementation -->
  │   └── treiber_stack1.mli  <-- stack signature -->
+ └── solution/
+     ├── dune
+     └── unit_tests_sol.ml   <-- solution -->
  └── test/
      ├── dune
      └── unit_tests.ml       <-- a unit test -->
@@ -20,7 +23,7 @@ From `exercises/exercise1`, you can use the following commands:
 | Command                            | Description                                  |
 |------------------------------------|----------------------------------------------|
 | `dune build`                       | Compile the project and all the tests.       |
-| `dune exec ./test/unit_tests.exe`     | Compile and run a specific test executable.              |
+| `dune exec ./test/unit_tests.exe`  | Compile and run a specific test executable.              |
 | `dune runtest -f`                  | Compile and run all the tests in the current directory.  |
 
 > **💡 Note**: `dune runtest` is shorter, however, this runs all the executables labelled as tests in the current directory. This is convenient when checking nothing has been broken in the whole project, but it is not ideal in a debugging phase, like for this tutorial.
@@ -45,22 +48,21 @@ diff -u base_implementation/treiber_stack.ml exercise1/lib/treiber_stack1.ml
 
 The objective of this exercise is to understand how to find what is wrong with the stack implementation.
 
-The first step is being able to identify that the implementation is wrong. For that, we wrote a single unit test in `exercises/exercise1/test/unit_tests.ml`. In this exercise, we will modify it to consistently catch the bug.
+## 1. Adding the size function to the test
 
-## Step 0: Running the test
-First, have a look at the test. You can run it using the following command:
+> **💡 Note**: For the given command line to work, you need to be in `exercises/exercise1` directory.
+
+In `test/unit_tests.ml` you will find a unfinished unit test. The purpose of this exercise is to complete the test and make it catch consistently the bug. 
+
+To run the test:
 ```shell
 dune exec ./test/unit_tests.exe
 ```
+Currently the test always passes as it returns `true` (line 48). 
 
-> **💡 Note**: Make sure you are in the `exercises/exercise1` directory.
+*Modify it to check that the value returned by the newly added `Stack.size` function is valid.*  
 
-
-## 1. Adding the size function to the test
-This unit test is written for the Treiber stack implementation without a size.
-
-### Step 1.1
-Modify the test `test_push_pop` to also check that the size of the stack is correct after the push and pop operations.
+> **💡 Tip**: You can use the function `drain_all` that is commented at the start of this test file.
 
 ```
             ┌───────────────────────┐
@@ -87,34 +89,62 @@ Modify the test `test_push_pop` to also check that the size of the stack is corr
 
 To increase the likelihood of triggering the bug, we need to repeat the test multiple times. For that, you can use the pre-defined `repeat : int -> (unit -> bool) -> bool` function in the `Utils` module to run the test multiple times.
 
-Try to find a number of repetitions that makes the test fail consistently.
+*Try to find a number of repetitions that makes the test fail consistently.*
 
 It is quite long, right? This is because the test is badly written: we spawn two domains at every repetition, but spawning a domain in OCaml is quite expensive! The next step should fix this issue.
 
 ### Step 2.2
 
-Improve the test by adding several `push` and `pop` operations in each domain, instead of just one. A few of each should be enough. You may also have to adapt the properties that are checked at the end of the test.
+*Improve the test by adding several `push` and `pop` operations in each domain, instead of just one.*
+
+ A few of each should be enough. You may also have to adapt the properties that are checked at the end of the test.
 
 At this point, you should be able to see the test failing consistently, without the test taking too long to run.
-
-> **💡 Tip**: We don't need to consider the popped element, as we are assuming the original Treiber stack implementation is working. You can ignore the return value of a function with the following syntaxes:
-> ```ocaml
-> let _ = Stack.pop_opt stack in
-> (* or *)
-> ignore (Stack.pop_opt stack);
-> ...
-> ```
 
 ## 3. Identifying the bug
 
 A nondeterministic bug in a concurrent program is often a sign of a race condition. There are two kinds of race conditions we are looking for today:
 - data races
-- race conditions between atomic operations (covered in exercises 2)
+- race conditions between atomic operations (covered in exercise 2)
 
-> **💡 Note**: If you have reached this point before the explanation about data races and race conditions, and you don't already know about them, no worries, you can still continue, all you really need to know is written below.
+> **💡 Note**: If you have reached this point before the explanation about data races and race conditions, and you don't already know about them, no worries, you can still continue, all you really need to know is written at [at the end of this file](README.md#data-races).
+
+### Exercise: Catching the data races
+To catch a data race, we use the same tool that other languages use: ThreadSanitizer ([TSan](https://ocaml.org/manual/5.3/tsan.html)). TSan instruments the compiler to detect data races during execution.
+
+> **💡 IMPORTANT WARNING**: 
+> Unfortunately, we could not make Tsan work on Codespaces as it requires to requires to lower the ASLR entropy of your machine.
+>
+> If you are working locally, on a Linux machine, you can run:
+> ```bash
+> sudo sysctl -w vm.mmap_rnd_bits=28
+> ```
+> 
+> Otherwise, you will find one trace that TSan can return on `solution/tsan_trace`. In this case, you can move to [Step 3.2](#follow-the-trace)
+> 
+
+To run the test with TSan, you need to use the second switch where TSan is enabled. You can switch to it with the following command:
+
+```shell
+opam switch 5.4.0+tsan
+eval $(opam env)
+```
+
+### Step 3.1
+*Run the test with the compiler with TSan enabled.*
+
+If the test is failing, you should see a (long) message from TSan giving the trace of the data races encountered during the execution.
+
+### Step 3.2 {#follow-the-trace}
+*Try to follow a trace to find the bug.*
+
+*Can you think of a fix for it?*
+
+If you have some time left, you can try to implement it!
 
 
-### About data races in OCaml 5's memory model
+## (Optional) Additional information
+### About data races in OCaml 5's memory model {#data-races}
 A *data race* occurs when:
 
 1. Two or more domains run in parallel,
@@ -133,21 +163,3 @@ In a data-race-free program, OCaml guarantees *sequential consistency*: every ex
 For more on OCaml's memory model:
 - https://ocaml.org/manual/5.4/parallelism.html
 - https://ocaml.org/manual/5.4/memorymodel.html
-
-### Exercise: Catching the data races
-To catch a data race, we use the same tool that other languages use: ThreadSanitizer ([TSan](https://ocaml.org/manual/5.3/tsan.html)). TSan instruments the compiler to detect data races during execution.
-
-To run the test with TSan, you need to use the second switch where TSan is enabled. You can switch to it with the following command:
-
-```shell
-opam switch ocaml+tsan
-eval $(opam env)
-```
-
-### Step 3.1
-Run the test again. If the test is failing, you should see a (long) message from TSan giving the trace of the data races encountered during the execution.
-
-### Step 3.2
-You can now try to follow a trace to find the bug.
-
-Can you think of a fix for it? If you have some time left, you can try to implement it!

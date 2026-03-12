@@ -4,11 +4,11 @@ module Stack = Treiber_stack1
 
 (** [drain_all stack] returns all the remaining elements of the stack in the
     same order (head of the list = top of the stack) *)
-(* let drain_all stack =
+let drain_all stack =
   let rec aux acc =
     match Stack.pop_opt stack with None -> acc | Some elt -> aux (elt :: acc)
   in
-  aux [] *)
+  aux []
 
 let test_push_pop (() : unit) : bool =
   let stack = Stack.create () in
@@ -20,14 +20,22 @@ let test_push_pop (() : unit) : bool =
        the other domain is ready, increasing the likelihood of them
        running concurrently. *)
     Barrier.await barrier;
-    (* 2.2 TODO add more operations here *)
-    Stack.push stack 42
+    Stack.push stack 1;
+    Stack.push stack 2;
+    Stack.push stack 3;
+    Stack.push stack 4;
+    Stack.push stack 5;
+    Stack.push stack 6
   in
 
   (* Work to run on the second domain. *)
   let cons_work () =
     Barrier.await barrier;
-    (* 2.2 TODO add more operations here *)
+    let _ = Stack.pop_opt stack in
+    let _ = Stack.pop_opt stack in
+    let _ = Stack.pop_opt stack in
+    let _ = Stack.pop_opt stack in
+    let _ = Stack.pop_opt stack in
     let _ = Stack.pop_opt stack in
     ()
   in
@@ -42,12 +50,9 @@ let test_push_pop (() : unit) : bool =
   let () = Domain.join consumer in
 
   (* Properties that should hold after both domains finish *)
-  (* 1. TODO : replace the following line to check that the value returns by 
-  `Stack.size` is correct.
-
-  Tip: You can use the function `drain_all` that is commented at the start of 
-  this file. *)
-  true
+  let size = Stack.size stack in
+  let remaining_elt = drain_all stack in
+  List.length remaining_elt = size
 
 (* The following is the infrastructure to launch the tests using Alcotest,
    which gives us a nice output. *)
@@ -58,8 +63,6 @@ let () =
       ( "parallel_tests",
         [
           test_case "push_pop_once" `Quick (fun () ->
-              check bool "true" true
-                ((* 2.2 TODO Repeat the test using `Utils.repeat` here. *)
-                 test_push_pop ()));
+              check bool "true" true (Utils.repeat 10_000 test_push_pop));
         ] );
     ]

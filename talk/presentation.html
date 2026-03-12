@@ -1090,7 +1090,7 @@ relevance:0},{begin:/-&gt;/}]})})();hljs.registerLanguage(&quot;ocaml&quot;,e)})
 &lt;h2 style=&quot;margin-top: -15px; text-align: center&quot;&gt;&lt;span&gt;A user’s guide to multicore safety in OCaml&lt;/span&gt;&lt;/h2&gt;&lt;/p&gt;
 &lt;h2&gt;&lt;span&gt;Setup&lt;/span&gt;&lt;/h2&gt;
 &lt;p&gt;&lt;span&gt;The set up instructions are here:&lt;/span&gt;&lt;/p&gt;
-&lt;pre&gt;&lt;code class=&quot;language-shell&quot;&gt;https://github.com/lyrm/bobkonf2026#setup
+&lt;pre&gt;&lt;code class=&quot;language-shell&quot;&gt;https://github.com/lyrm/bobkonf2026
 &lt;/code&gt;&lt;/pre&gt;
 &lt;p&gt;&lt;span&gt;You also need to clone the following repository, which contains the exercises we will be working on during the tutorial:&lt;/span&gt;&lt;/p&gt;
 &lt;pre&gt;&lt;code class=&quot;language-shell&quot;&gt;git clone git@github.com:lyrm/bobkonf2026.git
@@ -1550,8 +1550,9 @@ Hello from domain 1
 &lt;p&gt;&lt;span&gt;A &lt;/span&gt;&lt;strong&gt;&lt;span&gt;data race&lt;/span&gt;&lt;/strong&gt;&lt;span&gt; occurs when:&lt;/span&gt;&lt;/p&gt;
 &lt;ol&gt;
 &lt;li&gt;&lt;span&gt;Two or more domains run in parallel,&lt;/span&gt;&lt;/li&gt;
-&lt;li&gt;&lt;span&gt;at least two access the same &lt;/span&gt;&lt;em&gt;&lt;span&gt;non-atomic&lt;/span&gt;&lt;/em&gt;&lt;span&gt; mutable value,&lt;/span&gt;&lt;/li&gt;
-&lt;li&gt;&lt;span&gt;and at least one of them writes to it.&lt;/span&gt;&lt;/li&gt;
+&lt;li&gt;&lt;span&gt;at least two access the same mutable value,&lt;/span&gt;&lt;/li&gt;
+&lt;li&gt;&lt;span&gt;and at least one of them writes to it&lt;/span&gt;&lt;/li&gt;
+&lt;li&gt;&lt;span&gt;without a synchronization mechanism (like locks or atomic operations).&lt;/span&gt;&lt;/li&gt;
 &lt;/ol&gt;
 &lt;div id=&quot;data-race&quot;&gt;
 &lt;p&gt;&lt;span style=&quot;color: crimson&quot;&gt;&lt;strong&gt;&lt;span&gt;An unpredictable bug&lt;/span&gt;&lt;/strong&gt;&lt;span&gt;, caused by compiler and architecture optimization!&lt;/span&gt;&lt;/span&gt;&lt;/p&gt;
@@ -1903,6 +1904,35 @@ let push t v = push_ t v Backoff.default
 &lt;/div&gt;
 &lt;/div&gt;
 &lt;h2 up-at-unpause=part4 pause&gt;&lt;span&gt;OxCaml &lt;/span&gt;&lt;span id=&quot;part4&quot;&gt;&lt;/span&gt;&lt;/h2&gt;
+&lt;div src=4-oxcaml.md include&gt;
+&lt;p&gt;&lt;span&gt;OxCaml provides:&lt;/span&gt;&lt;/p&gt;
+&lt;p&gt;&lt;em&gt;&lt;span&gt;Safe control&lt;/span&gt;&lt;/em&gt;&lt;span&gt; over performance-critical aspects of program behavior, &lt;/span&gt;&lt;em&gt;&lt;span&gt;in OCaml&lt;/span&gt;&lt;/em&gt;&lt;/p&gt;
+&lt;div pause&gt;&lt;/div&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;strong&gt;&lt;span&gt;Control:&lt;/span&gt;&lt;/strong&gt;&lt;span&gt; over allocation and memory layout&lt;/span&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;div id=&quot;drf&quot; class=&quot;slipshow__carousel&quot; carousel pause&gt;
+&lt;div class=&quot;slipshow__carousel_active slipshow__carousel_children&quot;&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;strong&gt;&lt;span&gt;Safe:&lt;/span&gt;&lt;/strong&gt;&lt;span&gt; data-race freedom, memory safety&lt;/span&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/div&gt;
+&lt;div class=&quot;slipshow__carousel_children&quot;&gt;
+&lt;div class=&quot;box block&quot;&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;strong&gt;&lt;span&gt;Safe:&lt;/span&gt;&lt;/strong&gt;&lt;span&gt; data-race freedom, memory safety&lt;/span&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div pause&gt;&lt;/div&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;strong&gt;&lt;span&gt;in OCaml:&lt;/span&gt;&lt;/strong&gt;&lt;span&gt; OxCaml is a superset of OCaml, so every OCaml program is a valid OxCaml program&lt;/span&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;&lt;span&gt;and a ton of other features (see &lt;/span&gt;&lt;a href=&quot;https://oxcaml.org&quot;&gt;&lt;span&gt;oxcaml.org&lt;/span&gt;&lt;/a&gt;&lt;span&gt;).&lt;/span&gt;&lt;/p&gt;
+&lt;div change-page=drf&gt;&lt;/div&gt;
+&lt;div up-at-unpause pause&gt;&lt;/div&gt;
+&lt;/div&gt;
 &lt;/div&gt;
 &lt;/div&gt;
 &lt;/div&gt;

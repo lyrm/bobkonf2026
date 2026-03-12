@@ -7,7 +7,7 @@ If you already have `opam` installed and initialized, create these three switche
 Standard OCaml 5.4.0 with tutorial dependencies.
 
 ```bash
-opam switch create ocaml ocaml-base-compiler.5.4.0 --yes
+opam switch create 5.4.0 ocaml-base-compiler.5.4.0 --yes
 ```
 
 ```bash
@@ -18,7 +18,7 @@ eval $(opam env --switch ocaml)
 opam install -y dune ocaml-lsp-server merlin utop alcotest dscheck qcheck-stm qcheck-lin
 ```
 
-## `ocaml+tsan` switch
+## `ocaml+tsan` switch 
 
 OCaml 5.4.0 with ThreadSanitizer enabled.
 
@@ -31,7 +31,7 @@ sudo sysctl -w vm.mmap_rnd_bits=28
 Have `libunwind-dev` and `pkg-config` installed on your system, before creating the switch, if they aren't already, although `opam` may trigger their installation.
 
 ```bash
-opam switch create ocaml+tsan ocaml-variants.5.4.0+options ocaml-option-tsan --yes
+opam switch create 5.4.0+tsan ocaml-variants.5.4.0+options ocaml-option-tsan --yes
 ```
 
 ```bash
