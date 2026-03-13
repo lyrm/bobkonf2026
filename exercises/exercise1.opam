@@ -10,7 +10,6 @@ bug-reports: "https://github.com/lyrm/bobkonf2026/issues"
 depends: [
   "dune" {>= "3.20"}
   "ocaml" {>= "5.2.0"}
-  "alcotest" {with-test}
   "odoc" {with-doc}
 ]
 build: [
