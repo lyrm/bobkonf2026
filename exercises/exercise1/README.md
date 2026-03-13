@@ -171,3 +171,34 @@ For more on OCaml's memory model:
 - https://ocaml.org/manual/5.4/memorymodel.html
 
 Go back to [Identifying the bug](#3-identifying-the-bug) to continue the tutorial.
+
+
+
+### Reading TSan traces
+Here is the structure of a tsan trace:
+
+```html
+==================
+WARNING: ThreadSanitizer: data race (pid=1305739) <!-- first data race -->
+  Write .... <!-- what is the first side of the trace: a Write or a Read operation (at least one of the side is a Write) -->
+    #0 <!-- Where the first side of the data race happens -->
+    # <!-- rest of the trace -->
+
+  Previous write of .... <!-- what is the second side of the trace (Read or Write) -->
+    #0 <!-- Where the second side of the data race happens -->
+    # <!-- rest of the trace -->
+
+  Mutex M0 (0x72b4000001b0) created at: <!-- We don't care about the paragraph -->
+
+  Mutex M1 (0x72b4000002c0) created at: <!-- We don't care about the paragraph -->
+
+  Thread T8 (tid=1305761, running) created by main thread at: <!-- We don't care about the paragraph -->
+
+
+  Thread T6 (tid=1305759, running) created by main thread at: <!-- We don't care about the paragraph -->
+
+SUMMARY: <!-- a nice summary of what happen -->
+==================
+==================
+<!-- another data race -->
+```
