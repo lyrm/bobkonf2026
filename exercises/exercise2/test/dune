@@ -1,0 +1,5 @@
+(test
+ (package exercise2)
+ (name unit_tests)
+ (modules unit_tests)
+ (libraries treiber_stack2 utils threads.posix))

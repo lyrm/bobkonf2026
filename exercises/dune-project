@@ -27,3 +27,13 @@
  (depends
   (ocaml
    (>= 5.2.0))))
+
+(package
+ (name exercise2)
+ (synopsis "Exercise 2")
+ (description "Treiber stack with a atomic size")
+ (depends
+  (ocaml
+   (>= 5.2.0)))
+ (tags
+  ("bobkonf2026" "teaching")))

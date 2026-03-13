@@ -1,6 +1,6 @@
 (* Utils contains  `repeat` and the Barrier module. *)
 open Utils
-module Stack = Treiber_stack1
+module Stack = Treiber_stack2
 
 let drain_all stack = Utils.drain_all Stack.pop_opt stack
 
