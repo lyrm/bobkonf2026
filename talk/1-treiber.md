@@ -42,7 +42,7 @@
 
 {pause up}
 <div style="background: #e8f4fd; border: 1px solid #4a90d9; border-radius: 5px; padding: 0.4em 1em; font-size: 1em; text-align: center; margin-top: 1em;">
-📋 <strong>Setup</strong>: <code>git clone git@github.com:lyrm/bobkonf2026.git</code>. Full setup instructions in the README. </a>
+📋 <strong>Setup</strong>: <code>git clone git@github.com:lyrm/bobkonf2026.git</code>. Full setup instructions in the README.
 </div>
 
 ### First pitfall: mutable size field
@@ -82,8 +82,14 @@
 > > 
 > {.block .box reveal #ex1}
 > > 📝 Exercise 1: data races
-> > - Build a test that consistently fails 
+> > - Build a test that consistently fails
 > > - Find a trace to the bug with ThreadSanitizer
+> > ```
+> > exercises/exercise1/
+> > ├── README.md          <-- start here
+> > ├── lib/
+> > └── test/
+> > ```
 > 
 <!-- > {.block .box reveal #ex2}
 > > 📝 Exercise 2: race conditions on atomic operations

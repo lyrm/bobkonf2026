@@ -77,7 +77,7 @@
 >
 > let main () =
 >   let h1 = Domain.spawn d1 in
->   let h2 = Domain.spawn d2 () in
+>   let h2 = Domain.spawn d2 in
 >   Domain.join h1, Domain.join h2
 >```
 

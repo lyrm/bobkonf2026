@@ -56,7 +56,7 @@ But, also, it does increase contention on the stack, the following will work:
 type 'a s = { stack : 'a list; size : int }
 type 'a t = 'a s Atomic.t
 ```
-{pause}
+{pause down}
 ```ocaml
 let create () = Atomic.make { stack = []; size = 0 }
 let size t = (Atomic.get t).size
