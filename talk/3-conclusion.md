@@ -26,7 +26,7 @@
 
 > Detects data races at runtime
 >
-> Generates concurrent tests automatically and check for linearizability
+> Generates concurrent tests automatically and checks for linearizability
 >
 > Model-checks all interleavings of atomic operations
 
@@ -39,7 +39,7 @@
 
 Especially **dscheck** :
 - limited documentation, 
-- does not work on project with other synchronization mechanism like mutexes, condition variables, etc.
+- does not work on projects with other synchronization mechanism like mutexes, condition variables, etc.
 
 {pause}
 

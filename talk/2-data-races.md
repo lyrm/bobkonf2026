@@ -1,6 +1,7 @@
 ## Data races in OCaml 5's memory model
 
-{pause unreveal=data-race}
+{pause}
+
 
 <style>
 .box-columns {
@@ -39,13 +40,15 @@
 }
 </style>
 
+
 {.block .box}
 > {.box-columns}
 > > > A **data race** occurs when:
 > > >
 > > > 1. Two or more domains run in parallel,
-> > > 2. at least two access the same *non-atomic* mutable value,
-> > > 3. and at least one of them writes to it.
+> > > 2. at least two access the same mutable value,
+> > > 3. and at least one of them writes to it
+> > > 4. without a synchronization mechanism (like locks or atomic operations).
 > > >
 > > > {#data-race} 
 > > > > [**An unpredictable bug**, caused by compiler and architecture optimization!]{style="color: crimson"}
@@ -58,6 +61,7 @@
 > > > > - reference cells (`ref`)
 > > > > - mutable record fields (`{mutable field : ...}`)
 > > > > - arrays (`Array`)
+
 {reveal=data-race}
 
 {pause down}
@@ -73,7 +77,7 @@
 >
 > let main () =
 >   let h1 = Domain.spawn d1 in
->   let h2 = Domain.spawn d2 () in
+>   let h2 = Domain.spawn d2 in
 >   Domain.join h1, Domain.join h2
 >```
 
